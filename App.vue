@@ -14,4 +14,10 @@
 
 <style>
 	/*每个页面公共css */
+	/* 官方css库 */
+	@import "./common/uni.css";
+	/* 自定义图标库 */
+	@import "./common/icon.css";
+	/* 动画库 */
+	@import "./common/animate.css";
 </style>
