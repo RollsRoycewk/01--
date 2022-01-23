@@ -4,6 +4,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"app-plus":{
+					"bounce":"none",
 					// 导航栏
 					"titleNView":{
 						// 搜索框配置
@@ -50,7 +51,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "components/common/divider",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",
