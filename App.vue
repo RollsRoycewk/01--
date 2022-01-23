@@ -2,6 +2,9 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			// 检测更新
+			// 网络监听
+			// 初始化数据
 		},
 		onShow: function() {
 			console.log('App Show')
