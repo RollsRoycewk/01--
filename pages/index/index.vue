@@ -16,13 +16,16 @@
 
 		<swiper :duration="150" :current="tabIndex" @change="onChangeTab" :style="'height:' + scrollH + 'px;'">
 			<swiper-item v-for="(item, index) in newsList" :key="index">
-				<scroll-view scroll-y :style="'height:' + scrollH + 'px;'">
+				<scroll-view scroll-y :style="'height:' + scrollH + 'px;'" @scrolltolower="loadmore(index)">
+					<!-- 列表 -->
 					<block v-for="(v, i) in item.list" :key="i">
 						<!-- 列表样式 -->
 						<common-list :item="v" :index="i" @follow="follow" @doSupport="doSupport"></common-list>
 						<!-- 全局分割线 -->
 						<divider></divider>
 					</block>
+					<!-- 上拉加载 -->
+					<load-more :loadmore="item.loadmore"></load-more>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
@@ -32,11 +35,13 @@
 <script>
 import commonList from '@/components/common/common-list.vue';
 import divider from '@/components/common/divider';
+import loadMore from '@/components/common/load-more.vue'
 
 export default {
 	components: {
 		commonList,
-		divider
+		divider,
+		loadMore
 	},
 	data() {
 		return {
@@ -72,669 +77,109 @@ export default {
 					name: '本地'
 				}
 			],
-			newsList: [
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				},
-				{
-					list: [
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '/static/demo/datapic/11.jpg',
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: 'unsupport', // 踩
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						},
-						{
-							username: '昵称',
-							userpic: '/static/default.jpg',
-							newstime: '2019-10-20 下午04:30',
-							isFollow: false,
-							title: '我是标题',
-							titlepic: '',
-							support: {
-								type: '', // 未操作
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: 2,
-							share_num: 2
-						}
-					]
-				}
-			]
+			newsList: []
 		};
 	},
 	onLoad() {
 		uni.getSystemInfo({
 			success: res => {
-				this.scrollH = res.windowHeight - uni.upx2px(100);
+				this.scrollH = res.windowHeight - uni.upx2px(110);
 			}
 		});
+		// 根据选项卡获取数据
+		this.getData();
 	},
 	methods: {
+		// 上拉加载更多
+		loadmore(index) {
+			// 拿到当前列表
+			const item = this.newsList[index];
+			// 判断是否处于可加载状态(上拉加载更多)
+			if (item.loadmore !== '上拉加载更多') return;
+			// 修改当前列表加载状态
+			item.loadmore = '加载中......';
+			// 模拟数据请求
+			setTimeout(() => {
+				// 加载数据
+				item.list = [...item.list, ...item.list];
+				// 恢复初始加载状态
+				item.loadmore = '上拉加载更多';
+			},500);
+		},
+		// 获取数据
+		getData() {
+			const arr = [];
+			for (let i = 0; i < this.tabBars.length; i++) {
+				const obj = {
+					// 1.上拉加载更多  2.加载中... 3.没有更多了
+					loadmore: '上拉加载更多',
+					list: [
+						{
+							username: '昵称',
+							userpic: '/static/default.jpg',
+							newstime: '2019-10-20 下午04:30',
+							isFollow: false,
+							title: '我是标题',
+							titlepic: '/static/demo/datapic/11.jpg',
+							support: {
+								type: 'support', // 顶
+								support_count: 1,
+								unsupport_count: 2
+							},
+							comment_count: 2,
+							share_num: 2
+						},
+						{
+							username: '昵称',
+							userpic: '/static/default.jpg',
+							newstime: '2019-10-20 下午04:30',
+							isFollow: false,
+							title: '我是标题',
+							titlepic: '',
+							support: {
+								type: 'unsupport', // 踩
+								support_count: 1,
+								unsupport_count: 2
+							},
+							comment_count: 2,
+							share_num: 2
+						},
+						{
+							username: '昵称',
+							userpic: '/static/default.jpg',
+							newstime: '2019-10-20 下午04:30',
+							isFollow: false,
+							title: '我是标题',
+							titlepic: '',
+							support: {
+								type: '', // 未操作
+								support_count: 1,
+								unsupport_count: 2
+							},
+							comment_count: 2,
+							share_num: 2
+						},
+						{
+							username: '昵称',
+							userpic: '/static/default.jpg',
+							newstime: '2019-10-20 下午04:30',
+							isFollow: false,
+							title: '我是标题',
+							titlepic: '/static/demo/datapic/11.jpg',
+							support: {
+								type: 'support', // 顶
+								support_count: 1,
+								unsupport_count: 2
+							},
+							comment_count: 2,
+							share_num: 2
+						}
+					]
+				};
+				arr.push(obj);
+			}
+			this.newsList = arr;
+		},
 		// 监听滑动
 		onChangeTab(e) {
 			this.changeTab(e.detail.current);
@@ -748,7 +193,7 @@ export default {
 		},
 		// 关注
 		follow(index) {
-			this.list[index].isFollow = true;
+			this.newsList[this.tabIndex].list[index].isFollow = true;
 			uni.showToast({
 				title: '关注成功'
 			});
@@ -756,7 +201,7 @@ export default {
 		// 顶踩操作
 		doSupport(e) {
 			// 拿到当前数据对象
-			let item = this.list[e.index];
+			let item = this.newsList[this.tabIndex].list[e.index];
 			let msg = e.type === 'support' ? '顶' : '踩';
 
 			// 之前没有操作过

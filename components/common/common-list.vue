@@ -63,6 +63,7 @@ export default {
 		// 关注
 		follow() {
 			// 通知父组件
+			console.log("this",this.index);
 			this.$emit('follow', this.index);
 		},
 		// 进入详情页
