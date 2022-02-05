@@ -131,6 +131,12 @@
 				newsList: []
 			};
 		},
+		// 监听点击导航栏搜索框
+		onNavigationBarSearchInputClicked() {
+			uni.navigateTo({
+				url:"../search/search"
+			})
+		},
 		onLoad() {
 			uni.getSystemInfo({
 				success: res => {

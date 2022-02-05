@@ -3,29 +3,27 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"app-plus":{
-					"bounce":"none",
+				"app-plus": {
+					"bounce": "none",
 					// 导航栏
-					"titleNView":{
+					"titleNView": {
 						// 搜索框配置
-						"searchInput":{
-							"align":"center",
-							"backgroundColor":"#F5F4F2",
-							"borderRadius":"4px",
-							"disabled":true,
-							"placeholder":"搜索帖子",
-							"placeholderColor":"#6D6C67"
+						"searchInput": {
+							"align": "center",
+							"backgroundColor": "#F5F4F2",
+							"borderRadius": "4px",
+							"disabled": true,
+							"placeholder": "搜索帖子",
+							"placeholderColor": "#6D6C67"
 						},
-						"buttons":[
-							{
-								"color":"#333333",
-								"colorPressed":"#FD597C",
-								"float":"right",
-								"fontSize":"20px",
-								"fontSrc":"/static/iconfont.ttf",
-								"text":"\ue668"
-							}
-						]
+						"buttons": [{
+							"color": "#333333",
+							"colorPressed": "#FD597C",
+							"float": "right",
+							"fontSize": "20px",
+							"fontSrc": "/static/iconfont.ttf",
+							"text": "\ue668"
+						}]
 					}
 				}
 			}
@@ -50,8 +48,36 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/search/search",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"bounce": "none",
+					// 导航栏
+					"titleNView": {
+						// 搜索框配置
+						"searchInput": {
+							"align": "center",
+							"backgroundColor": "#F5F4F2",
+							"borderRadius": "4px",
+							"placeholder": "搜索帖子",
+							"placeholderColor": "#6D6C67"
+						},
+						"buttons": [{
+							"color": "#333333",
+							"colorPressed": "#FD597C",
+							"float": "right",
+							"fontSize": "14px",
+							"text": "搜索"
+						}]
+					}
+				}
+			}
+
 		}
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",
