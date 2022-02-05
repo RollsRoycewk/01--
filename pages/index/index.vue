@@ -137,6 +137,12 @@
 				url:"../search/search"
 			})
 		},
+		// 监听原生标题栏按钮点击事件，参数为Object
+		onNavigationBarButtonTap() {
+			uni.navigateTo({
+				url:"../add-input/add-input"
+			})
+		},
 		onLoad() {
 			uni.getSystemInfo({
 				success: res => {
