@@ -30,6 +30,9 @@
 		}, {
 			"path": "pages/news/news",
 			"style": {
+				"app-plus":{
+					"titleNView":false
+				},
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
