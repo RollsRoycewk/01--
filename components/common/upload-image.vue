@@ -40,6 +40,15 @@
 		['compressed', 'original']
 	]
 	export default {
+		props: {
+			list: Array
+		},
+		mounted() {
+			console.log("8974651326489765314684");
+			console.log("this", this.list);
+			this.imageList = this.list;
+			console.log("this.imageList", this.imageList);
+		},
 		data() {
 			return {
 				title: 'choose/previewImage',
@@ -71,7 +80,7 @@
 					confirmText: '删除',
 					success: res => {
 						if (res.confirm) {
-							this.imageList.splice(i,1);
+							this.imageList.splice(i, 1);
 							this.$emit('change', this.imageList);
 						}
 					}
@@ -102,6 +111,7 @@
 						.length : this.count[this.countIndex],
 					success: (res) => {
 						this.imageList = this.imageList.concat(res.tempFilePaths);
+						this.$emit('change', this.imageList);
 					},
 					fail: (err) => {
 						console.log("err: ", err);
