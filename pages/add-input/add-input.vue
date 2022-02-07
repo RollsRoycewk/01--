@@ -9,12 +9,13 @@
 		<!-- 文本域 -->
 		<textarea v-model="content" class="uni-textarea px-2" placeholder="说一句话呗.........."></textarea>
 		<!-- 多图上传 -->
-		<upload-image :list="imageList" @change="changeImage"></upload-image>
+		<upload-image ref="uploadImage" :list="imageList" :show="show" @change="changeImage"></upload-image>
 		<!-- 底部操作条 -->
 		<view class="fixed-bottom bg-white flex align-center" style="height: 85rpx;">
 			<view class="iconfont icon-caidan footer-btn animated" hover-class="jello"></view>
 			<view class="iconfont icon-huati footer-btn animated" hover-class="jello"></view>
-			<view class="iconfont icon-tupian footer-btn animated" hover-class="jello"></view>
+			<view class="iconfont icon-tupian footer-btn animated" hover-class="jello"
+				@click="iconClickEvent('uploadImage')"></view>
 			<view class="bg-main text-white ml-auto flex justify-center align-center rounded mr-2 animated"
 				style="width: 140rpx;height: 60rpx;">发送</view>
 		</view>
@@ -30,6 +31,11 @@
 			uniNavBar,
 			uploadImage
 		},
+		computed:{
+			show(){
+				return this.imageList.length > 0;
+			}
+		},
 		data() {
 			return {
 				content: "",
@@ -39,11 +45,11 @@
 			}
 		},
 		// 监听页面加载
-		onLoad(){
+		onLoad() {
 			uni.getStorage({
-				key:"add-input",
-				success:(res)=>{
-					if(res.data){
+				key: "add-input",
+				success: (res) => {
+					if (res.data) {
 						const result = JSON.parse(res.data);
 						this.content = result.content;
 						this.imageList = result.imageList;
@@ -52,6 +58,14 @@
 			})
 		},
 		methods: {
+			// 底部图片点击事件
+			iconClickEvent(e) {
+				switch (e) {
+					case 'uploadImage':
+						this.$refs.uploadImage.chooseImage()
+						break;
+				}
+			},
 			// 监听返回事件
 			onBackPress() {
 				if ((this.content || this.imageList.length) && !this.showBack) {
@@ -65,6 +79,8 @@
 							// 点击确认
 							if (res.confirm) {
 								this.store();
+							}else{
+								uni.clearStorage("add-input");
 							}
 							// 手动执行返回操作
 							uni.navigateBack({

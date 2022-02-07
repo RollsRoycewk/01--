@@ -1,6 +1,6 @@
 <template>
 	<view class="px-2">
-		<view class="uni-uploader">
+		<view class="uni-uploader" v-if="show">
 			<view class="uni-uploader-head">
 				<view class="uni-uploader-title">点击可预览选好的图片</view>
 				<view class="uni-uploader-info">{{imageList.length}}/9</view>
@@ -41,13 +41,14 @@
 	]
 	export default {
 		props: {
-			list: Array
+			list: Array,
+			show:{
+				type:Boolean,
+				default:true
+			}
 		},
 		mounted() {
-			console.log("8974651326489765314684");
-			console.log("this", this.list);
 			this.imageList = this.list;
-			console.log("this.imageList", this.imageList);
 		},
 		data() {
 			return {
