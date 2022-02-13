@@ -18,9 +18,18 @@
 		</view>
 		
 		<!-- 列表 -->
-		<block v-for="(item,index) in list1" :key="index">
-			<common-list :item="item" :index="index"></common-list>
-		</block>
+		<template v-if="listData.length">
+			<block v-for="(item,index) in listData" :key="index">
+				<common-list :item="item" :index="index"></common-list>
+				<divider></divider>
+			</block>
+			<!-- 加载更多 -->
+			<load-more  :loadmore="loadtext"></load-more>
+		</template>
+		<template v-else>
+			<no-thing></no-thing>
+		</template>
+
 	</view>
 </template>
 
@@ -73,12 +82,30 @@
 	];
 
 	import topicInfo from "@/components/topic-detail/topic-info.vue";
-	import commonList from "@/components/common/common-list.vue"
+	import commonList from "@/components/common/common-list.vue";
+	import noThing from "@/components/common/no-thing.vue";
+	import loadMore from "@/components/common/load-more.vue"
 
 	export default {
 		components: {
 			topicInfo,
-			commonList
+			commonList,
+			noThing,
+			loadMore
+		},
+		computed:{
+			listData(){
+				if(this.tabIndex === 0 ){
+					return this.list1;
+				}
+				return this.list2;
+			},
+			loadtext(){
+				if(this.tabIndex === 0 ){
+					return this.loadtext1;
+				}
+				return this.loadtext2;
+			}
 		},
 		data() {
 			return {
@@ -100,7 +127,12 @@
 				}, {
 					name: "最新"
 				}],
-				list1:[]
+				// 默认
+				list1:[],
+				loadtext1:"上拉加载更多",
+				// 最新
+				list2:[],
+				loadtext2:"上拉加载更多",
 			}
 		},
 		onLoad(e) {
@@ -114,7 +146,24 @@
 			// tab切换
 			changeTab(index) {
 				this.tabIndex = index
+			},
+			// 加载更多
+			loadmore(){
+				// 拿到当前的列表
+				const index = this.tabIndex;
+				// 判断是否处于可加载状态
+				if(this.loadtext !== '上拉加载更多') return;
+				// 设置上拉加载状态处于加载中...
+				this['loadtext'+(index+1)] = '加载中...';
+				// 请求数据
+				setTimeout(()=>{
+					this['list'+(index+1)] = [...this['list'+(index+1)],...this['list'+(index+1)]];
+					this['loadtext'+(index+1)] = '上拉加载更多';
+				},1500)
 			}
+		},
+		onReachBottom() {
+			this.loadmore();
 		}
 	}
 </script>
