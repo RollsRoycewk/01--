@@ -20,9 +20,8 @@
 		props: ['hotCate'],
 		methods: {
 			openMore() {
-				console.log(6479844654564546);
 				uni.navigateTo({
-					url: '../../pages/topic-nav/topic-nav/topic-nav'
+					url: '../../pages/topic-nav/topic-nav'
 				});
 			},
 			openDetail(item) {

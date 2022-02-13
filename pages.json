@@ -30,8 +30,8 @@
 		}, {
 			"path": "pages/news/news",
 			"style": {
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				},
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
@@ -87,17 +87,15 @@
 				}
 			}
 
+		}, {
+			"path": "pages/topic-nav/topic-nav",
+			"style": {
+				"navigationBarTitleText": "话题分类",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/topic-nav/topic-nav/topic-nav",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",
