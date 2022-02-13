@@ -94,6 +94,22 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/topic-detail/topic-detail",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView":{
+						// 导航栏样式。"default"-默认样式；"transparent"-滚动透明渐变；"float"-悬浮导航栏。
+						"type":"transparent",
+						"buttons":[{
+							"type":"menu"
+						}]
+					}
+				}
+			}
+
 		}
 	],
 	"globalStyle": {
