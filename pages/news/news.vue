@@ -36,7 +36,9 @@
 			</swiper-item>
 			<!-- 话题 -->
 			<swiper-item>
-				
+				<!-- 热门分类 -->
+				<hot-cate :hotCate="hotCate"></hot-cate>
+
 			</swiper-item>
 		</swiper>
 	</view>
@@ -94,7 +96,8 @@
 	import commonList from '@/components/common/common-list.vue';
 	import divider from '@/components/common/divider';
 	import loadMore from '@/components/common/load-more.vue';
-	import noThing from '@/components/common/no-thing.vue'
+	import noThing from '@/components/common/no-thing.vue';
+	import hotCate from "@/components/news/hot-cate.vue"
 
 	export default {
 		components: {
@@ -102,7 +105,8 @@
 			commonList,
 			divider,
 			loadMore,
-			noThing
+			noThing,
+			hotCate
 		},
 		data() {
 			return {
@@ -116,7 +120,21 @@
 				// 关注列表
 				list: [],
 				// 1.上拉加载更多  2.加载中... 3.没有更多了
-				loadmore: "上拉加载更多"
+				loadmore: "上拉加载更多",
+				// 热门分类
+				hotCate: [{
+					name: "关注",
+				}, {
+					name: "推荐"
+				}, {
+					name: "体育"
+				}, {
+					name: "热点"
+				}, {
+					name: "财经"
+				}, {
+					name: "娱乐"
+				}],
 			};
 		},
 		onLoad() {
@@ -130,10 +148,10 @@
 		},
 		methods: {
 			// 打开发布页
-			openAddInput(){
+			openAddInput() {
 				console.log("ghjkl");
 				uni.navigateTo({
-					url:"../add-input/add-input"
+					url: "../add-input/add-input"
 				})
 			},
 			// 切换选项卡
