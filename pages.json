@@ -41,7 +41,7 @@
 			"path": "pages/msg/msg",
 			"style": {
 				"navigationBarTitleText": "消息列表",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
 						"buttons": [{
