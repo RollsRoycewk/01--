@@ -1,47 +1,111 @@
 <template>
 	<view>
 		<!-- 消息列表 -->
-		<block v-for="(item,index) in list" :key="index">
-			<msg-list :item="item" :index="index"></msg-list>
-		</block>
+		<template v-if="list.length">
+			<block v-for="(item,index) in list" :key="index">
+				<msg-list :item="item" :index="index"></msg-list>
+			</block>
+		</template>
+		<template v-else>
+			<noThing></noThing>
+		</template>
+
+		<!-- 弹出层 -->
+		<uniPopup ref="popup" type="top">
+			<view class="flex align-center justify-center font-md border-bottom py-2" hover-class="bg-light"
+				@click="popupEvent('friend')">
+				<text class="iconfont icon-sousuo mr-2"></text> 添加好友
+			</view>
+			<view class="flex align-center justify-center font-md py-2" hover-class="bg-light"
+				@click="popupEvent('clear')">
+				<text class="iconfont icon-shanchu mr-2"></text> 清除列表
+			</view>
+		</uniPopup>
 	</view>
 </template>
 
 <script>
+	const demo = [{
+		avatar: "/static/default.jpg",
+		username: "帝莎编程",
+		update_time: 1570718427,
+		data: "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
+		noread: 20
+	}, {
+		avatar: "/static/default.jpg",
+		username: "帝莎编程",
+		update_time: 1570718427,
+		data: "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
+		noread: 20
+	}, {
+		avatar: "/static/default.jpg",
+		username: "帝莎编程",
+		update_time: 1570718427,
+		data: "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
+		noread: 20
+	}, {
+		avatar: "/static/default.jpg",
+		username: "帝莎编程",
+		update_time: 1570718427,
+		data: "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
+		noread: 20
+	}];
+
+
 	import msgList from "@/components/msg/msg-list.vue";
+	import noThing from "@/components/common/no-thing.vue";
+	import uniPopup from "@/components/uni-ui/uni-popup/uni-popup.vue";
 
 	export default {
 		components: {
-			msgList
+			msgList,
+			noThing,
+			uniPopup
 		},
 		data() {
 			return {
-				list: [{
-					avatar: "/static/default.jpg",
-					username: "聊天信息",
-					update_time: 1570718427,
-					data: "聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊",
-					noread: 20
-				}, {
-					avatar: "/static/default.jpg",
-					username: "聊天信息",
-					update_time: 1570718427,
-					data: "聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊",
-					noread: 20
-				}, {
-					avatar: "/static/default.jpg",
-					username: "聊天信息",
-					update_time: 1570718427,
-					data: "聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊",
-					noread: 20
-				}, {
-					avatar: "/static/default.jpg",
-					username: "聊天信息",
-					update_time: 1570718427,
-					data: "聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊聊天信息啊啊",
-					noread: 20
-				}]
+				list: []
 			};
+		},
+		// 页面加载
+		onLoad() {
+			this.list = demo;
+		},
+		// 监听下拉刷新
+		onPullDownRefresh() {
+			this.refresh()
+		},
+		// 监听原生标题栏按钮点击事件
+		onNavigationBarButtonTap(e) {
+			switch (e.index) {
+				case 0: // 左边
+					break;
+				case 1: // 右边
+					this.$refs.popup.open("top")
+					break;
+			}
+		},
+		methods: {
+			// 下拉刷新
+			refresh() {
+				setTimeout(() => {
+					this.list = demo;
+					uni.stopPullDownRefresh();
+				}, 2000)
+			},
+			// 弹出层选项点击事件
+			popupEvent(e) {
+				switch (e) {
+					case 'friend':
+						console.log('添加好友');
+						break;
+					case 'clear':
+						console.log('清除列表');
+						break;
+				}
+				// 关闭弹出层
+				this.$refs.popup.close()
+			}
 		}
 	}
 </script>
