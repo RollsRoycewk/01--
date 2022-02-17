@@ -11,7 +11,7 @@
 		</template>
 
 		<!-- 弹出层 -->
-		<uniPopup ref="popup" type="top">
+		<uni-popup ref="popup" type="top">
 			<view class="flex align-center justify-center font-md border-bottom py-2" hover-class="bg-light"
 				@click="popupEvent('friend')">
 				<text class="iconfont icon-sousuo mr-2"></text> 添加好友
@@ -20,7 +20,7 @@
 				@click="popupEvent('clear')">
 				<text class="iconfont icon-shanchu mr-2"></text> 清除列表
 			</view>
-		</uniPopup>
+		</uni-popup>
 	</view>
 </template>
 
@@ -79,6 +79,10 @@
 		onNavigationBarButtonTap(e) {
 			switch (e.index) {
 				case 0: // 左边
+					uni.navigateTo({
+						url: '../user-list/user-list'
+					});
+					this.$refs.popup.close()
 					break;
 				case 1: // 右边
 					this.$refs.popup.open("top")
