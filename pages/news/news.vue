@@ -41,7 +41,7 @@
 					<!-- 搜索框 -->
 					<view class="p-2">
 						<view class="bg-light rounded flex align-center justify-center text-secondary py-2">
-							<text class="iconfont icon-sousuo mr-2"></text>
+							<text class="iconfont icon-sousuo mr-2" @click="openSearch"></text>
 							搜索话题
 						</view>
 					</view>
@@ -235,6 +235,12 @@
 			this.list = demo;
 		},
 		methods: {
+			// 搜索
+			openSearch(){
+				uni.navigateTo({
+					url:"../search/search?type=topic"
+				})
+			},
 			// 打开发布页
 			openAddInput() {
 				console.log("ghjkl");

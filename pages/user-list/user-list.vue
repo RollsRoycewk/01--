@@ -130,7 +130,7 @@
 		// 监听原生标题栏搜索输入框点击事件
 		onNavigationBarSearchInputClicked() {
 			uni.navigateTo({
-				url: '../search/search'
+				url: '../search/search?type=user'
 			});
 		},
 		// 监听原生标题栏按钮点击事件 

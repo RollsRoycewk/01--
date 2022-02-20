@@ -134,7 +134,7 @@
 		// 监听点击导航栏搜索框
 		onNavigationBarSearchInputClicked() {
 			uni.navigateTo({
-				url:"../search/search"
+				url:"../search/search?type=post"
 			})
 		},
 		// 监听原生标题栏按钮点击事件，参数为Object

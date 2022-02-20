@@ -101,6 +101,9 @@
 			popupEvent(e) {
 				switch (e) {
 					case 'friend':
+						uni.navigateTo({
+							url: '../search/search?type=user'
+						});
 						console.log('添加好友');
 						break;
 					case 'clear':

@@ -164,7 +164,7 @@
 		}, {
 			"path": "pages/user-chat/user-chat",
 			"style": {
-				"navigationBarTitleText": "",
+				"navigationBarTitleText": "社区交友",
 				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": {

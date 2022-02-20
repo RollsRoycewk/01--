@@ -13,7 +13,7 @@
 		<!-- 底部操作条 -->
 		<view class="fixed-bottom border-top bg-white flex align-center" style="height: 100rpx;">
 			<input class="flex-1 rounded bg-light ml-2" type="text" v-model="content" placeholder="文明发言"
-				style="padding: 5rpx;" @confirm="submit"/>
+				style="padding: 5rpx;" @confirm="submit" />
 			<view class="iconfont icon-fabu flex align-center justify-center font-lg animated" style="width: 100rpx;"
 				hover-class="jello text-main" @click="submit"></view>
 		</view>
@@ -27,6 +27,10 @@
 		components: {
 			userChat
 		},
+		// 页面加载完成的时候
+		onReady() {
+			this.pageToBottom();
+		},
 		data() {
 			return {
 				scrollInto: '',
@@ -35,206 +39,73 @@
 					user_id: 2,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊001",
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
 					user_id: 1,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊002",
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
 					user_id: 2,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊003",
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
-					user_id: Date.now(),
+					user_id: 1,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊" + Date.now(),
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
-					user_id: Date.now(),
+					user_id: 2,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊" + Date.now(),
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
-					user_id: Date.now(),
+					user_id: 1,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊" + Date.now(),
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
-					user_id: Date.now(),
+					user_id: 2,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊" + Date.now(),
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
-					user_id: Date.now(),
+					user_id: 1,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊" + Date.now(),
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
-					user_id: Date.now(),
+					user_id: 2,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊" + Date.now(),
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
 				}, {
-					user_id: Date.now(),
+					user_id: 1,
 					avatar: "/static/default.jpg",
 					username: "昵称",
-					data: "你好啊" + Date.now(),
+					data: "你好啊",
 					type: "text",
 					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, {
-					user_id: Date.now(),
-					avatar: "/static/default.jpg",
-					username: "昵称",
-					data: "你好啊" + Date.now(),
-					type: "text",
-					create_time: 1570783530
-				}, ]
+				}]
 			};
 		},
 		methods: {
@@ -264,11 +135,9 @@
 			},
 			// 滚动到底部
 			pageToBottom() {
-				let lastIndex = this.list.length - 1;
+				let lastIndex = this.list.length - 1
 				if (lastIndex < 0) return;
-				console.log("chat" + lastIndex);
-				this.scrollInto = "chat" + lastIndex;
-				console.log(this.scrollInto,"000000000000000000");
+				this.scrollInto = 'chat' + lastIndex
 			}
 		}
 	}
