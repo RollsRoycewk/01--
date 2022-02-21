@@ -11,21 +11,24 @@
 
 		</scroll-view>
 		<!-- 底部操作条 -->
-		<view class="fixed-bottom border-top bg-white flex align-center" style="height: 100rpx;">
+<!-- 		<view class="fixed-bottom border-top bg-white flex align-center" style="height: 100rpx;">
 			<input class="flex-1 rounded bg-light ml-2" type="text" v-model="content" placeholder="文明发言"
 				style="padding: 5rpx;" @confirm="submit" />
 			<view class="iconfont icon-fabu flex align-center justify-center font-lg animated" style="width: 100rpx;"
 				hover-class="jello text-main" @click="submit"></view>
-		</view>
+		</view> -->
+		<bottom-input @submit="submit"></bottom-input>
 	</view>
 </template>
 
 <script>
-	import userChat from "@/components/user-chat/user-chat.vue"
+	import userChat from "@/components/user-chat/user-chat.vue";
+	import bottomInput from "@/components/common/bottom-input.vue"
 
 	export default {
 		components: {
-			userChat
+			userChat,
+			bottomInput
 		},
 		// 页面加载完成的时候
 		onReady() {
@@ -110,20 +113,13 @@
 		},
 		methods: {
 			// 发送消息
-			submit() {
-				if (!this.content) {
-					return uni.showToast({
-						title: "发送消息不能为空",
-						icon: "none"
-					})
-				}
-
+			submit(data) {
 				let obj = {
 					user_id: 1,
 					avatar: "/static/default.jpg",
 					username: "昵称",
 					type: "text",
-					data: this.content,
+					data: data,
 					create_time: (new Date).getTime()
 				}
 
