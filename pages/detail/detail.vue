@@ -18,7 +18,7 @@
 		<view class="px-2">
 			<view class="uni-comment-list">
 				<view class="uni-comment-face">
-					<image src="https://img-cdn-qiniu.dcloud.net.cn/uniapp/images/uni@2x.png" mode="widthFix"></image>
+					<image src="../../static/default.jpg" mode="widthFix"></image>
 				</view>
 				<view class="uni-comment-body">
 					<view class="uni-comment-top">
@@ -35,18 +35,23 @@
 		<!-- 占位 -->
 		<view style="height: 100rpx;"></view>
 		<bottom-input @submit="submit"></bottom-input>
-		
+
+		<!-- 分享 -->
+		<more-share ref="share"></more-share>
+
 	</view>
 </template>
 
 <script>
 	import commonList from "@/components/common/common-list.vue";
 	import bottomInput from "@/components/common/bottom-input.vue";
+	import moreShare from "@/components/common/more-share.vue"
 
 	export default {
 		components: {
 			commonList,
-			bottomInput
+			bottomInput,
+			moreShare
 		},
 		data() {
 			return {
@@ -86,6 +91,12 @@
 				this.__init(JSON.parse(e.detail))
 			}
 		},
+		onNavigationBarButtonTap() {
+			this.$refs.share.open()
+		},
+		onBackPress() {
+			this.$refs.share.close()
+		},
 		methods: {
 			__init(data) {
 				// 修改标题
@@ -96,7 +107,7 @@
 			},
 			doComment() {},
 			doShare() {
-				
+				this.$refs.share.open()
 			},
 			submit(data) {
 				console.log("data", data);
