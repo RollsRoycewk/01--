@@ -9,6 +9,9 @@ import divider from "@/components/common/divider.vue";
 // 注册或获取全局组件
 Vue.component("divider",divider);
 
+import uniIcons from "@/components/uni-ui/uni-icons/uni-icons.vue";
+Vue.component("uniIcons",uniIcons);
+
 App.mpType = 'app'
 const app = new Vue({
     ...App

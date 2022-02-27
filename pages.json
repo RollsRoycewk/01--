@@ -66,8 +66,15 @@
 		}, {
 			"path": "pages/my/my",
 			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [{
+							"type": "menu"
+						}]
+					}
+				}
 			}
 
 		}, {
