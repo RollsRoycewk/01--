@@ -57,6 +57,11 @@
 					num: 0
 				}]
 			};
+		},
+		onNavigationBarButtonTap() {
+			uni.navigateTo({
+				url: '../user-set/user-set'
+			});
 		}
 	}
 </script>
