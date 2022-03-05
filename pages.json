@@ -202,26 +202,29 @@
 				}
 			}
 
+		}, {
+			"path": "pages/user-set/user-set",
+			"style": {
+				"navigationBarTitleText": "设置",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user-password/user-password",
+			"style": {
+				"navigationBarTitleText": "修改密码",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user-email/user-email",
+			"style": {
+				"navigationBarTitleText": "绑定邮箱",
+				"enablePullDownRefresh": false
+			}
+
 		}
-	    ,{
-            "path" : "pages/user-set/user-set",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "设置",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/user-password/user-password",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "修改密码",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",
