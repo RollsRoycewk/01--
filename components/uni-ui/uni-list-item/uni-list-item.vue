@@ -14,9 +14,12 @@
 				<view v-if="note" class="uni-list-item__content-note">{{ note }}</view>
 			</view>
 			<view v-if="showBadge || showArrow || showSwitch" class="uni-list-item__extra">
-				<uni-badge v-if="showBadge" :type="badgeType" :text="badgeText" />
-				<switch v-if="showSwitch" :disabled="disabled" :checked="switchChecked" @change="onSwitchChange" />
-				<uni-icons v-if="showArrow" :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+				<slot name="right">
+					<uni-badge v-if="showBadge" :type="badgeType" :text="badgeText" />
+					<switch v-if="showSwitch" :disabled="disabled" :checked="switchChecked" @change="onSwitchChange" />
+					<uni-icons v-if="showArrow" :size="20" class="uni-icon-wrapper" color="#bbb" type="arrowright" />
+				</slot>
+				
 			</view>
 		</view>
 	</view>
@@ -184,7 +187,7 @@
 	}
 
 	.uni-list-item__extra {
-		width: 25%;
+		width: 50%;
 		display: flex;
 		flex-direction: row;
 		justify-content: flex-end;

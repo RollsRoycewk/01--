@@ -224,7 +224,16 @@
 			}
 
 		}
-	],
+	    ,{
+            "path" : "pages/user-userinfo/user-userinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "修改资料",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",

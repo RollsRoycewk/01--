@@ -2,7 +2,7 @@
 	<view>
 		<uni-list-item title="账号与安全" @click="open('user-password')"></uni-list-item>
 		<uni-list-item title="绑定邮箱" @click="open('user-email')"></uni-list-item>
-		<uni-list-item title="资料编辑"></uni-list-item>
+		<uni-list-item title="资料编辑" @click="open('user-userinfo')"></uni-list-item>
 		<uni-list-item title="清除缓存"></uni-list-item>
 		<uni-list-item title="意见反馈"></uni-list-item>
 		<uni-list-item title="关于社区"></uni-list-item>
