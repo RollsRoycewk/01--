@@ -38,9 +38,9 @@
 				<text class="iconfont icon-bianji1 ml-2"></text>
 			</view>
 		</uni-list-item>
-		<uni-list-item title="家乡">
+		<uni-list-item title="家乡" @click="showCityPicker">
 			<view class="flex align-center" slot="right">
-				<text>广东广州</text>
+				<text>{{pickerText}}</text>
 				<text class="iconfont icon-bianji1 ml-2"></text>
 			</view>
 		</uni-list-item>
@@ -48,6 +48,9 @@
 		<view class="py-2 px-3">
 			<button class="bg-main text-white" style="border-radius: 50rpx;border: 0;" type="primary">完成</button>
 		</view>
+
+		<mpvue-city-picker :themeColor="themeColor" ref="mpvueCityPicker" :pickerValueDefault="cityPickerValueDefault"
+			@onConfirm="onConfirm"></mpvue-city-picker>
 	</view>
 </template>
 
@@ -55,11 +58,13 @@
 	const sexArray = ['保密', '男', '女']
 	const emotionArray = ['保密', '未婚', '已婚']
 
-	import uniListItem from "@/components/uni-ui/uni-list-item/uni-list-item.vue"
+	import uniListItem from "@/components/uni-ui/uni-list-item/uni-list-item.vue";
+	import mpvueCityPicker from "@/components/uni-ui/mpvue-citypicker/mpvueCityPicker.vue"
 
 	export default {
 		components: {
-			uniListItem
+			uniListItem,
+			mpvueCityPicker
 		},
 		data() {
 			return {
@@ -69,7 +74,10 @@
 				sex: 0,
 				emotion: 0,
 				job: "保密",
-				birthday:"2022-03-05"
+				birthday: "2022-03-05",
+				themeColor: '#007AFF',
+				cityPickerValueDefault: [0, 0, 1],
+				pickerText: '',
 			};
 		},
 		computed: {
@@ -81,8 +89,15 @@
 			}
 		},
 		methods: {
+			showCityPicker() {
+				this.$refs.mpvueCityPicker.show()
+			},
+			// 三级联动提交事件
+			onConfirm(e) {
+				this.pickerText = e.label
+			},
 			// 修改生日
-			onDateChange(e){
+			onDateChange(e) {
 				this.birthday = e.detail.value;
 			},
 			// 修改用户头像
