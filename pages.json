@@ -223,35 +223,39 @@
 				"enablePullDownRefresh": false
 			}
 
+		}, {
+			"path": "pages/user-userinfo/user-userinfo",
+			"style": {
+				"navigationBarTitleText": "修改资料",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/user-feedback/user-feedback",
+			"style": {
+				"navigationBarTitleText": "意见反馈",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/about/about",
+			"style": {
+				"navigationBarTitleText": "关于社区",
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView":false
+				}
+			}
+
 		}
-	    ,{
-            "path" : "pages/user-userinfo/user-userinfo",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "修改资料",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/user-feedback/user-feedback",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "意见反馈",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
-            "path" : "pages/about/about",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "关于社区",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-    ],
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",
