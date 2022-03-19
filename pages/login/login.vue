@@ -55,17 +55,7 @@
 			<view style="height: 1rpx; background-color: #dddddd; width: 100rpx"></view>
 		</view>
 
-		<view class="flex align-center px-5 py-3">
-			<view class="flex align-center justify-center flex-1">
-				<view class="iconfont icon-QQ font-lg text-white bg-primary flex align-center justify-center rounded-circle" style="width: 100rpx; height: 100rpx"></view>
-			</view>
-			<view class="flex align-center justify-center flex-1">
-				<view class="iconfont icon-QQ font-lg text-white bg-primary flex align-center justify-center rounded-circle" style="width: 100rpx; height: 100rpx"></view>
-			</view>
-			<view class="flex align-center justify-center flex-1">
-				<view class="iconfont icon-QQ font-lg text-white bg-primary flex align-center justify-center rounded-circle" style="width: 100rpx; height: 100rpx"></view>
-			</view>
-		</view>
+		<other-login></other-login>
 
 		<view class="flex align-center justify-center text-muted">
 			注册即代表同意
@@ -76,10 +66,12 @@
 
 <script>
 import uniStatusBar from '@/components/uni-ui/uni-status-bar/uni-status-bar.vue';
+import otherLogin from '@/components/common/other-login';
 
 export default {
 	components: {
-		uniStatusBar
+		uniStatusBar,
+		otherLogin
 	},
 	data() {
 		return {
