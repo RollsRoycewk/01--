@@ -1,5 +1,6 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
 			"style": {
@@ -16,18 +17,21 @@
 							"placeholder": "搜索帖子",
 							"placeholderColor": "#6D6C67"
 						},
-						"buttons": [{
-							"color": "#333333",
-							"colorPressed": "#FD597C",
-							"float": "right",
-							"fontSize": "20px",
-							"fontSrc": "/static/iconfont.ttf",
-							"text": "\ue668"
-						}]
+						"buttons": [
+							{
+								"color": "#333333",
+								"colorPressed": "#FD597C",
+								"float": "right",
+								"fontSize": "20px",
+								"fontSrc": "/static/iconfont.ttf",
+								"text": "\ue668"
+							}
+						]
 					}
 				}
 			}
-		}, {
+		},
+		{
 			"path": "pages/news/news",
 			"style": {
 				"app-plus": {
@@ -36,48 +40,53 @@
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/msg/msg",
 			"style": {
 				"navigationBarTitleText": "消息列表",
 				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"color": "#333333",
-							"colorPressed": "#FD597C",
-							"float": "left",
-							"fontSize": "20px",
-							"fontSrc": "/static/iconfont.ttf",
-							"text": "\ue611"
-						}, {
-							"color": "#333333",
-							"colorPressed": "#FD597C",
-							"float": "right",
-							"fontSize": "20px",
-							"fontSrc": "/static/iconfont.ttf",
-							"text": "\ue649"
-						}]
+						"buttons": [
+							{
+								"color": "#333333",
+								"colorPressed": "#FD597C",
+								"float": "left",
+								"fontSize": "20px",
+								"fontSrc": "/static/iconfont.ttf",
+								"text": "\ue611"
+							},
+							{
+								"color": "#333333",
+								"colorPressed": "#FD597C",
+								"float": "right",
+								"fontSize": "20px",
+								"fontSrc": "/static/iconfont.ttf",
+								"text": "\ue649"
+							}
+						]
 					}
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/my/my",
 			"style": {
 				"navigationBarTitleText": "我的",
 				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"type": "menu"
-						}]
+						"buttons": [
+							{
+								"type": "menu"
+							}
+						]
 					}
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索",
@@ -94,33 +103,35 @@
 							"placeholder": "搜索帖子",
 							"placeholderColor": "#6D6C67"
 						},
-						"buttons": [{
-							"color": "#333333",
-							"colorPressed": "#FD597C",
-							"float": "right",
-							"fontSize": "14px",
-							"text": "搜索"
-						}]
+						"buttons": [
+							{
+								"color": "#333333",
+								"colorPressed": "#FD597C",
+								"float": "right",
+								"fontSize": "14px",
+								"text": "搜索"
+							}
+						]
 					}
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/add-input/add-input",
 			"style": {
 				"app-plus": {
 					"titleNView": false
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/topic-nav/topic-nav",
 			"style": {
 				"navigationBarTitleText": "话题分类",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/topic-detail/topic-detail",
 			"style": {
 				"navigationBarTitleText": "",
@@ -129,14 +140,16 @@
 					"titleNView": {
 						// 导航栏样式。"default"-默认样式；"transparent"-滚动透明渐变；"float"-悬浮导航栏。
 						"type": "transparent",
-						"buttons": [{
-							"type": "menu"
-						}]
+						"buttons": [
+							{
+								"type": "menu"
+							}
+						]
 					}
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user-list/user-list",
 			"style": {
 				"navigationBarTitleText": "",
@@ -157,103 +170,124 @@
 							"placeholder": "搜索用户",
 							"placeholderColor": "#6D6C67"
 						},
-						"buttons": [{
-							"color": "#333333",
-							"colorPressed": "#FD597C",
-							"float": "right",
-							"fontSize": "15px",
-							"text": "取消"
-						}]
+						"buttons": [
+							{
+								"color": "#333333",
+								"colorPressed": "#FD597C",
+								"float": "right",
+								"fontSize": "15px",
+								"text": "取消"
+							}
+						]
 					}
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user-chat/user-chat",
 			"style": {
 				"navigationBarTitleText": "社区交友",
 				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"color": "#333333",
-							"colorPressed": "#FD597C",
-							"float": "right",
-							"fontSize": "20px",
-							"fontSrc": "/static/iconfont.ttf",
-							"text": "\ue628"
-						}]
+						"buttons": [
+							{
+								"color": "#333333",
+								"colorPressed": "#FD597C",
+								"float": "right",
+								"fontSize": "20px",
+								"fontSrc": "/static/iconfont.ttf",
+								"text": "\ue628"
+							}
+						]
 					}
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/detail/detail",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": {
-						"buttons": [{
-							"type": "menu",
-							"float": "right"
-						}]
+						"buttons": [
+							{
+								"type": "menu",
+								"float": "right"
+							}
+						]
 					}
 				}
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user-set/user-set",
 			"style": {
 				"navigationBarTitleText": "设置",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user-password/user-password",
 			"style": {
 				"navigationBarTitleText": "修改密码",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user-email/user-email",
 			"style": {
 				"navigationBarTitleText": "绑定邮箱",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user-userinfo/user-userinfo",
 			"style": {
 				"navigationBarTitleText": "修改资料",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/user-feedback/user-feedback",
 			"style": {
 				"navigationBarTitleText": "意见反馈",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/about/about",
 			"style": {
 				"navigationBarTitleText": "关于社区",
 				"enablePullDownRefresh": false
 			}
-
-		}, {
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
-				"app-plus":{
-					"titleNView":false
+				"app-plus": {
+					"titleNView": false
 				}
 			}
-
+		},
+		{
+			"path": "pages/user-space/user-space",
+			"style": {
+				"navigationBarTitleText": "个人空间",
+				"enablePullDownRefresh": false,
+				"app-plus": {
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "menu"
+							}
+						]
+					}
+				}
+			}
 		}
 	],
 	"globalStyle": {
@@ -267,26 +301,31 @@
 		"selectedColor": "#ED6384",
 		"backgroundColor": "#FFFFFF",
 		"borderStyle": "black",
-		"list": [{
-			"pagePath": "pages/index/index",
-			"text": "首页",
-			"iconPath": "static/tabbar/index.png",
-			"selectedIconPath": "static/tabbar/indexed.png"
-		}, {
-			"pagePath": "pages/news/news",
-			"text": "动态",
-			"iconPath": "static/tabbar/news.png",
-			"selectedIconPath": "static/tabbar/newsed.png"
-		}, {
-			"pagePath": "pages/msg/msg",
-			"text": "消息",
-			"iconPath": "static/tabbar/paper.png",
-			"selectedIconPath": "static/tabbar/papered.png"
-		}, {
-			"pagePath": "pages/my/my",
-			"text": "我的",
-			"iconPath": "static/tabbar/home.png",
-			"selectedIconPath": "static/tabbar/homeed.png"
-		}]
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabbar/index.png",
+				"selectedIconPath": "static/tabbar/indexed.png"
+			},
+			{
+				"pagePath": "pages/news/news",
+				"text": "动态",
+				"iconPath": "static/tabbar/news.png",
+				"selectedIconPath": "static/tabbar/newsed.png"
+			},
+			{
+				"pagePath": "pages/msg/msg",
+				"text": "消息",
+				"iconPath": "static/tabbar/paper.png",
+				"selectedIconPath": "static/tabbar/papered.png"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"text": "我的",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/homeed.png"
+			}
+		]
 	}
 }
