@@ -1,6 +1,6 @@
 <template>
 	<!-- 列表样式 -->
-	<view class="p-2">
+	<view class="p-2 animated fast fadeIn">
 		<!-- 头像昵称|关注按钮 -->
 		<view class="flex align-center justify-between">
 			<view class="flex align-center">
