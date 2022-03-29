@@ -1,7 +1,10 @@
-import App from './App';
-
 // #ifndef VUE3
-import Vue from 'vue'
+import App from './App';
+import Vue from 'vue';
+import store from "./store/index";
+
+Vue.prototype.$store = store;
+
 Vue.config.productionTip = false
 
 // 引入全局组件
@@ -23,6 +26,7 @@ Vue.prototype.$U = $U;
 
 App.mpType = 'app'
 const app = new Vue({
+	store,
 	...App
 })
 app.$mount()
