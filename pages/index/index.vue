@@ -178,6 +178,12 @@ export default {
 		},
 		// 获取数据
 		getData() {
+			// 获取分类
+			this.$H.get('/postclass').then((res) => {
+				let [err, result] = res;
+				console.log('result', result);
+			});
+
 			const arr = [];
 			for (let i = 0; i < this.tabBars.length; i++) {
 				// const obj = {

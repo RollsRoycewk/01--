@@ -21,6 +21,9 @@ Vue.prototype.$C = $C;
 // 挂载助手函数
 import $U from "./common/util"
 Vue.prototype.$U = $U;
+// 引入请求库
+import $H from "./common/request";
+Vue.prototype.$H = $H;
 
 // 权限验证操作
 Vue.prototype.checkAuth = (callback) => {
