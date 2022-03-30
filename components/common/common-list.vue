@@ -70,9 +70,11 @@
 			},
 			// 关注
 			follow() {
-				// 通知父组件
-				console.log("this", this.index);
-				this.$emit('follow', this.index);
+				this.checkAuth(()=>{
+					// 通知父组件
+					console.log("this", this.index);
+					this.$emit('follow', this.index);
+				})
 			},
 			// 进入详情页
 			openDetail() {
@@ -84,18 +86,23 @@
 			},
 			// 顶踩操作
 			doSupport(type) {
-				// 通知父组件
-				this.$emit("doSupport", {
-					type: type,
-					index: this.index
+				this.checkAuth(()=>{
+					// 通知父组件
+					this.$emit("doSupport", {
+						type: type,
+						index: this.index
+					})
 				})
+
 			},
 			// 评论
 			doComment() {
-				if (!this.isdetail) {
-					return this.openDetail()
-				}
-				this.$emit("doComment");
+				this.checkAuth(()=>{
+					if (!this.isdetail) {
+						return this.openDetail()
+					}
+					this.$emit("doComment");
+				})
 			},
 			// 分享
 			doShare() {

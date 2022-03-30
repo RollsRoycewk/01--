@@ -22,6 +22,35 @@ Vue.prototype.$C = $C;
 import $U from "./common/util"
 Vue.prototype.$U = $U;
 
+// 权限验证操作
+Vue.prototype.checkAuth = (callback) => {
+	// 权限验证
+	if (!store.state.loginState) {
+		uni.showToast({
+			title: "请先登录",
+			icon: "none"
+		})
+		return uni.navigateTo({
+			url: "/pages/login/login"
+		})
+	}
+	callback()
+}
+
+// 权限验证跳转
+Vue.prototype.navigateTo = (options) => {
+	// 权限验证
+	if (!store.state.loginState) {
+		uni.showToast({
+			title: "请先登录",
+			icon: "none"
+		})
+		return uni.navigateTo({
+			url: "/pages/login/login"
+		})
+	}
+	uni.navigateTo(options)
+}
 
 
 App.mpType = 'app'

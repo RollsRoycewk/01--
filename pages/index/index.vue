@@ -143,13 +143,13 @@ export default {
 	},
 	// 监听原生标题栏按钮点击事件，参数为Object
 	onNavigationBarButtonTap() {
-		uni.navigateTo({
+		this.navigateTo({
 			url: '../add-input/add-input'
 		});
 	},
 	onLoad() {
 		console.log('this.$C', this.$C.webUrl);
-		this.$store.commit('changeLoginStatus', { num: 123 });
+		// this.$store.commit('changeLoginStatus', { num: 123 });
 		console.log('this.$Store', this.$store.state.loginState);
 		uni.getSystemInfo({
 			success: (res) => {
