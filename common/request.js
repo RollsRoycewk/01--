@@ -1,16 +1,15 @@
-import $C from "@/common/config.js";
+import $C from '@/common/config.js';
 
 export default {
 	common: {
-		methods: "GET",
+		methods: 'GET',
 		header: {
-			"content-type": "application/json"
+			'content-type': 'application/json'
 		},
 		data: {}
 	},
 
 	request(options = {}) {
-
 		options.url = $C.webUrl + options.url;
 		options.methods = options.methods || this.common.methods;
 		options.header = options.header || this.common.header;
@@ -21,7 +20,7 @@ export default {
 	get(url, data = {}, options = {}) {
 		options.url = url;
 		options.data = data;
-		options.methods = "GET";
-		return this.request(options)
+		options.methods = 'GET';
+		return this.request(options);
 	}
-}
+};
