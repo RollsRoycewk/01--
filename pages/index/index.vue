@@ -34,6 +34,12 @@
 						<!-- 上拉加载 -->
 						<load-more :loadmore="item.loadmore"></load-more>
 					</template>
+					<!-- 加载中 -->
+					<template v-else-if="!item.firstLoad">
+						<view class="text-light-muted flex align-center justify-center font-md" style="height: 200rpx;">
+							加载中...
+						</view>
+					</template>
 					<template v-else>
 						<no-thing></no-thing>
 					</template>
@@ -98,13 +104,9 @@ export default {
 			if (item.loadmore !== '上拉加载更多') return;
 			// 修改当前列表加载状态
 			item.loadmore = '加载中......';
-			// 模拟数据请求
-			setTimeout(() => {
-				// 加载数据
-				item.list = [...item.list, ...item.list];
-				// 恢复初始加载状态
-				item.loadmore = '上拉加载更多';
-			}, 500);
+			// 请求数据
+			item.page++;
+			this.getList();
 		},
 		// 获取数据
 		async getData() {
@@ -121,40 +123,37 @@ export default {
 					// 1.上拉加载更多  2.加载中... 3.没有更多了
 					loadmore: '上拉加载更多',
 					list: [],
-					page: 1
+					page: 1,
+					firstLoad: false
 				});
 			}
 			this.newsList = arr;
 
 			// 获取第一个分类的数据
 			if (this.tabBars.length) {
-				let id = this.tabBars[0].id;
-				let page = this.newsList[0].page;
-
-				this.$H.get('/postclass/' + id + '/post/' + page).then(res => {
-					const [err2, result2] = res;
-					const list = result2.data.data.list.map(v => {
-						return {
-							id: v.id,
-							user_id: v.user_id,
-							username: v.user.username,
-							userpic: v.user.userpic,
-							newstime: v.create_time,
-							title: v.title,
-							titlepic: v.titlepic,
-							isFollow: false,
-							support: {
-								type: 'support', // 顶
-								support_count: 1,
-								unsupport_count: 2
-							},
-							comment_count: v.comment_count,
-							share_num: v.sharenum
-						};
-					});
-					this.newsList[0].list = list;
-				});
+				this.getList();
 			}
+		},
+		// 获取第一个分类的数据
+		getList() {
+			let index = this.tabIndex;
+			let id = this.tabBars[index].id;
+			let page = this.newsList[index].page;
+			let isrefresh = page === 1;
+
+			this.$H.get('/postclass/' + id + '/post/' + page).then(res => {
+				const [err2, result2] = res;
+				const list = result2.data.data.list.map(v => {
+					return this.$U.formatCommonList(v);
+				});
+
+				this.newsList[index].list = isrefresh ? list : [...this.newsList[index].list, ...list];
+				this.newsList[index].loadmore = list.length < 10 ? '没有更多了' : '上拉加载更多';
+
+				if (isrefresh) {
+					this.newsList[index].firstLoad = true;
+				}
+			});
 		},
 		// 监听滑动
 		onChangeTab(e) {
@@ -166,6 +165,10 @@ export default {
 			this.tabIndex = index;
 			// 滚动到指定元素
 			this.scrollInto = 'tab' + index;
+			// 获取当前分类下的列表数据
+			if (!this.newsList[this.tabIndex].firstLoad) {
+				this.getList();
+			}
 		},
 		// 关注
 		follow(index) {
