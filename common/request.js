@@ -22,5 +22,12 @@ export default {
 		options.data = data;
 		options.methods = 'GET';
 		return this.request(options);
+	},
+
+	post(url, data = {}, options = {}) {
+		options.url = url;
+		options.data = data;
+		options.methods = 'POST';
+		return this.request(options);
 	}
 };

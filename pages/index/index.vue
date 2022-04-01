@@ -1,20 +1,26 @@
 <template>
 	<view>
 		<!-- 顶部选项卡 -->
-		<scroll-view scroll-x scroll-with-animation :scroll-into-view="scrollInto" class="scroll-row" style="height: 100rpx">
+		<scroll-view
+			scroll-x
+			scroll-with-animation
+			:scroll-into-view="scrollInto"
+			class="scroll-row"
+			style="height: 100rpx"
+		>
 			<view
-				class="scroll-row-item px-3 py-2 font-md"
-				:id="'tab' + index"
-				:class="[tabIndex === index ? 'text-main font-weight-bold font-lg' : '']"
 				v-for="(item, index) in tabBars"
+				:id="'tab' + index"
 				:key="index"
+				class="scroll-row-item px-3 py-2 font-md"
+				:class="[tabIndex === index ? 'text-main font-weight-bold font-lg' : '']"
 				@click="changeTab(index)"
 			>
-				{{ item.name }}
+				{{ item.classname }}
 			</view>
 		</scroll-view>
 
-		<swiper :duration="150" :current="tabIndex" @change="onChangeTab" :style="'height:' + scrollH + 'px;'">
+		<swiper :duration="150" :current="tabIndex" :style="'height:' + scrollH + 'px;'" @change="onChangeTab">
 			<swiper-item v-for="(item, index) in newsList" :key="index">
 				<scroll-view scroll-y :style="'height:' + scrollH + 'px;'" @scrolltolower="loadmore(index)">
 					<!-- 列表 -->
@@ -38,54 +44,6 @@
 </template>
 
 <script>
-const demo = [
-	{
-		username: '昵称',
-		userpic: '/static/default.jpg',
-		newstime: '2019-10-20 下午04:30',
-		isFollow: false,
-		title: '我是标题',
-		titlepic: '/static/demo/datapic/11.jpg',
-		support: {
-			type: 'support', // 顶
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 2,
-		share_num: 2
-	},
-	{
-		username: '昵称',
-		userpic: '/static/default.jpg',
-		newstime: '2019-10-20 下午04:30',
-		isFollow: false,
-		title: '我是标题',
-		titlepic: '',
-		support: {
-			type: 'unsupport', // 踩
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 2,
-		share_num: 2
-	},
-	{
-		username: '昵称',
-		userpic: '/static/default.jpg',
-		newstime: '2019-10-20 下午04:30',
-		isFollow: false,
-		title: '我是标题',
-		titlepic: '',
-		support: {
-			type: '', // 未操作
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 2,
-		share_num: 2
-	}
-];
-
 import commonList from '@/components/common/common-list.vue';
 import divider from '@/components/common/divider';
 import loadMore from '@/components/common/load-more.vue';
@@ -103,35 +61,7 @@ export default {
 			scrollH: 200,
 			tabIndex: 0,
 			scrollInto: '',
-			tabBars: [
-				{
-					name: '关注'
-				},
-				{
-					name: '推荐'
-				},
-				{
-					name: '体育'
-				},
-				{
-					name: '热点'
-				},
-				{
-					name: '财经'
-				},
-				{
-					name: '娱乐'
-				},
-				{
-					name: '军事'
-				},
-				{
-					name: '历史'
-				},
-				{
-					name: '本地'
-				}
-			],
+			tabBars: [],
 			newsList: []
 		};
 	},
@@ -152,7 +82,7 @@ export default {
 		// this.$store.commit('changeLoginStatus', { num: 123 });
 		console.log('this.$Store', this.$store.state.loginState);
 		uni.getSystemInfo({
-			success: (res) => {
+			success: res => {
 				this.scrollH = res.windowHeight - uni.upx2px(110);
 			}
 		});
@@ -177,93 +107,54 @@ export default {
 			}, 500);
 		},
 		// 获取数据
-		getData() {
+		async getData() {
 			// 获取分类
-			this.$H.get('/postclass').then((res) => {
+			await this.$H.get('/postclass').then(res => {
 				let [err, result] = res;
-				console.log('result', result);
+				this.tabBars = result.data.data.list;
 			});
 
 			const arr = [];
-			for (let i = 0; i < this.tabBars.length; i++) {
-				// const obj = {
-				// 	// 1.上拉加载更多  2.加载中... 3.没有更多了
-				// 	loadmore: '上拉加载更多',
-				// 	list: [{
-				// 			username: '昵称',
-				// 			userpic: '/static/default.jpg',
-				// 			newstime: '2019-10-20 下午04:30',
-				// 			isFollow: false,
-				// 			title: '我是标题',
-				// 			titlepic: '/static/demo/datapic/11.jpg',
-				// 			support: {
-				// 				type: 'support', // 顶
-				// 				support_count: 1,
-				// 				unsupport_count: 2
-				// 			},
-				// 			comment_count: 2,
-				// 			share_num: 2
-				// 		},
-				// 		{
-				// 			username: '昵称',
-				// 			userpic: '/static/default.jpg',
-				// 			newstime: '2019-10-20 下午04:30',
-				// 			isFollow: false,
-				// 			title: '我是标题',
-				// 			titlepic: '',
-				// 			support: {
-				// 				type: 'unsupport', // 踩
-				// 				support_count: 1,
-				// 				unsupport_count: 2
-				// 			},
-				// 			comment_count: 2,
-				// 			share_num: 2
-				// 		},
-				// 		{
-				// 			username: '昵称',
-				// 			userpic: '/static/default.jpg',
-				// 			newstime: '2019-10-20 下午04:30',
-				// 			isFollow: false,
-				// 			title: '我是标题',
-				// 			titlepic: '',
-				// 			support: {
-				// 				type: '', // 未操作
-				// 				support_count: 1,
-				// 				unsupport_count: 2
-				// 			},
-				// 			comment_count: 2,
-				// 			share_num: 2
-				// 		},
-				// 		{
-				// 			username: '昵称',
-				// 			userpic: '/static/default.jpg',
-				// 			newstime: '2019-10-20 下午04:30',
-				// 			isFollow: false,
-				// 			title: '我是标题',
-				// 			titlepic: '/static/demo/datapic/11.jpg',
-				// 			support: {
-				// 				type: 'support', // 顶
-				// 				support_count: 1,
-				// 				unsupport_count: 2
-				// 			},
-				// 			comment_count: 2,
-				// 			share_num: 2
-				// 		}
-				// 	]
-				// };
-
+			for (const item of this.tabBars) {
 				// 生成列表模板
-				let obj = {
+				arr.push({
 					// 1.上拉加载更多  2.加载中... 3.没有更多了
 					loadmore: '上拉加载更多',
-					list: []
-				};
-				if (i < 2) {
-					obj.list = demo;
-				}
-				arr.push(obj);
+					list: [],
+					page: 1
+				});
 			}
 			this.newsList = arr;
+
+			// 获取第一个分类的数据
+			if (this.tabBars.length) {
+				let id = this.tabBars[0].id;
+				let page = this.newsList[0].page;
+
+				this.$H.get('/postclass/' + id + '/post/' + page).then(res => {
+					const [err2, result2] = res;
+					const list = result2.data.data.list.map(v => {
+						return {
+							id: v.id,
+							user_id: v.user_id,
+							username: v.user.username,
+							userpic: v.user.userpic,
+							newstime: v.create_time,
+							title: v.title,
+							titlepic: v.titlepic,
+							isFollow: false,
+							support: {
+								type: 'support', // 顶
+								support_count: 1,
+								unsupport_count: 2
+							},
+							comment_count: v.comment_count,
+							share_num: v.sharenum
+						};
+					});
+					this.newsList[0].list = list;
+				});
+			}
 		},
 		// 监听滑动
 		onChangeTab(e) {
