@@ -112,8 +112,7 @@ export default {
 		async getData() {
 			// 获取分类
 			await this.$H.get('/postclass').then(res => {
-				let [err, result] = res;
-				this.tabBars = result.data.data.list;
+				this.tabBars = res.list;
 			});
 
 			const arr = [];
@@ -142,8 +141,7 @@ export default {
 			let isrefresh = page === 1;
 
 			this.$H.get('/postclass/' + id + '/post/' + page).then(res => {
-				const [err2, result2] = res;
-				const list = result2.data.data.list.map(v => {
+				const list = res.list.map(v => {
 					return this.$U.formatCommonList(v);
 				});
 
