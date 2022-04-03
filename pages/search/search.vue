@@ -167,9 +167,28 @@ export default {
 				})
 				.then(res => {
 					// 整理格式
-					let list = res.list.map(v => {
-						return this.$U.formatCommonList(v);
-					});
+					let list = [];
+					switch (this.type) {
+						case 'post':
+							list = res.list.map(v => {
+								return this.$U.formatCommonList(v);
+							});
+							break;
+						case 'topic':
+							list = res.list.map(v => {
+								return {
+									id: v.id,
+									cover: v.titlepic,
+									title: v.title,
+									desc: v.desc,
+									today_count: v.todaypost_count,
+									news_count: v.post_count
+								};
+							});
+							break;
+						case 'user':
+							break;
+					}
 
 					// 渲染页面
 					this.searchList = isrefresh ? list : [...this.searchList, ...list];
