@@ -15,7 +15,7 @@
 				<!-- 昵称/发布时间 -->
 				<view>
 					<view class="font" style="line-height: 1.5;">{{ item.username }}</view>
-					<view class="font-sm text-light-muted" style="line-height: 1.5;">{{ item.newstime }}</view>
+					<view class="font-sm text-light-muted" style="line-height: 1.5;">{{ item.newstime | formatTime }}</view>
 				</view>
 			</view>
 			<!-- 按钮 -->
@@ -78,7 +78,14 @@
 </template>
 
 <script>
+import $T from '@/common/time.js';
+
 export default {
+	filters: {
+		formatTime(value) {
+			return $T.gettime(value);
+		}
+	},
 	props: {
 		item: Object,
 		index: Number,
