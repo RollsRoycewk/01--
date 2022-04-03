@@ -72,5 +72,12 @@ export default {
 			comment_count: v.comment_count,
 			share_num: v.sharenum
 		};
+	},
+	// 数组置顶
+	__toFirst(arr, index) {
+		if (index != 0) {
+			arr.unshift(arr.splice(index, 1)[0]);
+		}
+		return arr;
 	}
 };

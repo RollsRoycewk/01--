@@ -90,7 +90,7 @@
 			"path": "pages/search/search",
 			"style": {
 				"navigationBarTitleText": "搜索",
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"bounce": "none",
 					// 导航栏

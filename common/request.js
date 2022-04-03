@@ -2,7 +2,7 @@ import $C from '@/common/config.js';
 
 export default {
 	common: {
-		methods: 'GET',
+		method: 'GET',
 		header: {
 			'content-type': 'application/json'
 		},
@@ -11,7 +11,7 @@ export default {
 
 	request(options = {}) {
 		options.url = $C.webUrl + options.url;
-		options.methods = options.methods || this.common.methods;
+		options.method = options.method || this.common.method;
 		options.header = options.header || this.common.header;
 
 		return new Promise((res, rej) => {
@@ -42,14 +42,14 @@ export default {
 	get(url, data = {}, options = {}) {
 		options.url = url;
 		options.data = data;
-		options.methods = 'GET';
+		options.method = 'GET';
 		return this.request(options);
 	},
 
 	post(url, data = {}, options = {}) {
 		options.url = url;
 		options.data = data;
-		options.methods = 'POST';
+		options.method = 'POST';
 		return this.request(options);
 	}
 };
