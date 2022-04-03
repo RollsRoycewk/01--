@@ -112,7 +112,8 @@ export default {
 			// 处于详情页中
 			if (this.isdetail) return;
 			uni.navigateTo({
-				url: '../../pages/detail/detail?detail=' + JSON.stringify(this.item)
+				// avigateTo方法携带的参数是有字符串长度限制的,超出部分就无法携带了,这就回导致传递过去的对象不闭合,使用json解析的时候就产生了报错.
+				url: '../../pages/detail/detail?detail=' + encodeURIComponent(JSON.stringify(this.item))
 			});
 		},
 		// 顶踩操作

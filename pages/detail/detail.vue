@@ -1,12 +1,24 @@
 <template>
 	<view>
 		<!-- 帖子详情页详情信息 -->
-		<common-list :item="info" isdetail="" @doComment="doComment" @doShare="doShare" @follow="follow"
-			@doSupport="doSupport">
-			<view>{{info.content}}</view>
+		<common-list
+			:item="info"
+			isdetail=""
+			@doComment="doComment"
+			@doShare="doShare"
+			@follow="follow"
+			@doSupport="doSupport"
+		>
+			<view>{{ info.content }}</view>
 			<view class="">
-				<image class="w-100" :src="item.url" mode="widthFix" v-for="(item,index) in info.images" :key="index"
-					@click="preview(index)"></image>
+				<image
+					v-for="(item, index) in info.images"
+					:key="index"
+					class="w-100"
+					:src="item.url"
+					mode="widthFix"
+					@click="preview(index)"
+				></image>
 			</view>
 		</common-list>
 
@@ -38,127 +50,109 @@
 
 		<!-- 分享 -->
 		<more-share ref="share"></more-share>
-
 	</view>
 </template>
 
 <script>
-	import commonList from "@/components/common/common-list.vue";
-	import bottomInput from "@/components/common/bottom-input.vue";
-	import moreShare from "@/components/common/more-share.vue"
+import commonList from '@/components/common/common-list.vue';
+import bottomInput from '@/components/common/bottom-input.vue';
+import moreShare from '@/components/common/more-share.vue';
 
-	export default {
-		components: {
-			commonList,
-			bottomInput,
-			moreShare
+export default {
+	components: {
+		commonList,
+		bottomInput,
+		moreShare
+	},
+	data() {
+		return {
+			// 当前帖子信息
+			info: {}
+		};
+	},
+	computed: {
+		imagesList() {
+			return this.info.images.map(item => item.url);
+		}
+	},
+	onLoad(e) {
+		// 初始化
+		if (e.detail) {
+			this.__init(JSON.parse(decodeURIComponent(e.detail)));
+		}
+	},
+	onNavigationBarButtonTap() {
+		this.$refs.share.open();
+	},
+	onBackPress() {
+		this.$refs.share.close();
+	},
+	methods: {
+		__init(data) {
+			// 修改标题
+			uni.setNavigationBarTitle({
+				title: data.title
+			});
+			this.info = data;
+			this.info.content = '';
+
+			// 请求api
+			this.$H.get('/post/' + this.info.id).then(res => {
+				this.info.content = res.detail.content;
+			});
 		},
-		data() {
-			return {
-				// 当前帖子信息
-				// 当前帖子信息
-				info: {
-					username: "昵称",
-					userpic: "/static/default.jpg",
-					newstime: "2019-10-20 下午04:30",
-					isFollow: false,
-					title: "我是标题",
-					titlepic: "/static/demo/datapic/11.jpg",
-					support: {
-						type: "support", // 顶
-						support_count: 1,
-						unsupport_count: 2
-					},
-					comment_count: 2,
-					share_num: 2,
-					content: "帝莎编程学院：uni-app第二季仿商城类实战项目开发，uni-app第二季仿微信实战项目开发",
-					images: [{
-						url: "https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/Appstatic/qsbk/demo/datapic/4.jpg"
-					}, {
-						url: "https://tangzhe123-com.oss-cn-shenzhen.aliyuncs.com/Appstatic/qsbk/demo/datapic/5.jpg"
-					}]
-				}
-			};
+		doComment() {},
+		doShare() {
+			this.$refs.share.open();
 		},
-		computed: {
-			imagesList() {
-				return this.info.images.map(item => item.url)
-			}
+		submit(data) {
+			console.log('data', data);
 		},
-		onLoad(e) {
-			// 初始化
-			if (e.detail) {
-				this.__init(JSON.parse(e.detail))
-			}
+		// 预览图片
+		preview(index) {
+			uni.previewImage({
+				current: index,
+				urls: this.imagesList
+			});
 		},
-		onNavigationBarButtonTap() {
-			this.$refs.share.open()
+		// 关注
+		follow() {
+			this.info.isFollow = true;
+			uni.showToast({
+				title: '关注成功'
+			});
 		},
-		onBackPress() {
-			this.$refs.share.close()
-		},
-		methods: {
-			__init(data) {
-				// 修改标题
-				uni.setNavigationBarTitle({
-					title: data.title
-				})
-				// 请求api
-			},
-			doComment() {},
-			doShare() {
-				this.$refs.share.open()
-			},
-			submit(data) {
-				console.log("data", data);
-			},
-			// 预览图片
-			preview(index) {
-				uni.previewImage({
-					current: index,
-					urls: this.imagesList
-				})
-			},
-			// 关注
-			follow() {
-				this.info.isFollow = true
-				uni.showToast({
-					title: '关注成功'
-				});
-			},
-			// 顶踩操作
-			doSupport(e) {
-				// 之前操作过
-				if (this.info.support.type === e.type) {
-					return uni.showToast({
-						title: '你已经操作过了',
-						icon: 'none'
-					});
-				}
-				let msg = e.type === 'support' ? '顶' : '踩'
-				// 之前没有操作过
-				if (this.info.support.type === '') {
-					this.info.support[e.type + '_count']++
-				} else if (this.info.support.type === 'support' && e.type === 'unsupport') {
-					// 顶 - 1
-					this.info.support.support_count--;
-					// 踩 + 1
-					this.info.support.unsupport_count++;
-				} else if (this.info.support.type === 'unsupport' && e.type === 'support') {
-					// 顶 + 1
-					this.info.support.support_count++;
-					// 踩 - 1
-					this.info.support.unsupport_count--;
-				}
-				this.info.support.type = e.type
-				uni.showToast({
-					title: msg
+		// 顶踩操作
+		doSupport(e) {
+			// 之前操作过
+			if (this.info.support.type === e.type) {
+				return uni.showToast({
+					title: '你已经操作过了',
+					icon: 'none'
 				});
 			}
+			let msg = e.type === 'support' ? '顶' : '踩';
+			// 之前没有操作过
+			if (this.info.support.type === '') {
+				this.info.support[e.type + '_count']++;
+			} else if (this.info.support.type === 'support' && e.type === 'unsupport') {
+				// 顶 - 1
+				this.info.support.support_count--;
+				// 踩 + 1
+				this.info.support.unsupport_count++;
+			} else if (this.info.support.type === 'unsupport' && e.type === 'support') {
+				// 顶 + 1
+				this.info.support.support_count++;
+				// 踩 - 1
+				this.info.support.unsupport_count--;
+			}
+			this.info.support.type = e.type;
+			uni.showToast({
+				title: msg
+			});
 		}
 	}
+};
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
