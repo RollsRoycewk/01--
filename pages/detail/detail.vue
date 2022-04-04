@@ -84,13 +84,18 @@ export default {
 			uni.$on('updateFollowOrSupport', e => {
 				switch (e.type) {
 					case 'follow': // 关注
-						this.follow();
+						this.follow(e.data.user_id);
 						break;
-					default:
+					case 'support': // 顶踩
+						this.doSupport(e.data);
 						break;
 				}
 			});
 		}
+	},
+	onUnload() {
+		// 如果没有回调,会清除所有事件
+		uni.$off('updateFollowOrSupport', e => {});
 	},
 	onNavigationBarButtonTap() {
 		this.$refs.share.open();

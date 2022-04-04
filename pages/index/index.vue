@@ -97,13 +97,15 @@ export default {
 				case 'follow': // 关注
 					this.follow(e.data.user_id);
 					break;
-				default:
+				case 'support': // 顶踩
+					this.doSupport(e.data);
 					break;
 			}
 		});
 	},
 	onUnload() {
-		uni.$off('updateFollowOrSupport');
+		// 如果没有回调,会清除所有事件
+		uni.$off('updateFollowOrSupport', e => {});
 	},
 	methods: {
 		// 上拉加载更多
@@ -150,7 +152,7 @@ export default {
 			let page = this.newsList[index].page;
 			let isrefresh = page === 1;
 
-			this.$H.get('/postclass/' + id + '/post/' + page).then(res => {
+			this.$H.get('/postclass/' + id + '/post/' + page, {}, { token: true, noCheck: true }).then(res => {
 				const list = res.list.map(v => {
 					return this.$U.formatCommonList(v);
 				});
@@ -192,28 +194,29 @@ export default {
 		},
 		// 顶踩操作
 		doSupport(e) {
-			// 拿到当前数据对象
-			let item = this.newsList[this.tabIndex].list[e.index];
-			let msg = e.type === 'support' ? '顶' : '踩';
-
-			// 之前没有操作过
-			if (item.support.type === '') {
-				item.support[e.type + '_count']++;
-			} else if (item.support.type === 'support' && e.type === 'unsupport') {
-				// 顶 - 1
-				item.support.support_count--;
-				// 踩 + 1
-				item.support.unsupport_count++;
-			} else if (item.support.type === 'unsupport' && e.type === 'support') {
-				// 顶 + 1
-				item.support.support_count++;
-				// 踩 - 1
-				item.support.unsupport_count--;
-			}
-			item.support.type = e.type;
-			uni.showToast({
-				title: msg + '成功'
+			// 拿到当前的选项卡对应的list
+			this.newsList[this.tabIndex].list.forEach(item => {
+				if (item.id === e.id) {
+					// 之前没有操作过
+					if (item.support.type === '') {
+						item.support[e.type + '_count']++;
+					} else if (item.support.type === 'support' && e.type === 'unsupport') {
+						// 顶 - 1
+						item.support.support_count--;
+						// 踩 + 1
+						item.support.unsupport_count++;
+					} else if (item.support.type === 'unsupport' && e.type === 'support') {
+						// 之前踩了
+						// 顶 + 1
+						item.support.support_count++;
+						// 踩 - 1
+						item.support.unsupport_count--;
+					}
+					item.support.type = e.type;
+				}
 			});
+			let msg = e.type === 'support' ? '顶' : '踩';
+			uni.showToast({ title: msg + '成功' });
 		}
 	}
 };

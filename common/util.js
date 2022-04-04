@@ -55,6 +55,13 @@ export default {
 	},
 	// 转化公共列表数据
 	formatCommonList(v) {
+		let isFollow = v.user.fens.length > 0;
+
+		let support = '';
+		if (v.support.length > 0) {
+			support = v.support[0].type === 0 ? 'support' : 'unsupport';
+		}
+
 		return {
 			id: v.id,
 			user_id: v.user_id,
@@ -63,11 +70,11 @@ export default {
 			newstime: v.create_time,
 			title: v.title,
 			titlepic: v.titlepic,
-			isFollow: false,
+			isFollow: isFollow,
 			support: {
-				type: 'support', // 顶
-				support_count: 1,
-				unsupport_count: 2
+				type: support, // 顶
+				support_count: v.ding_count,
+				unsupport_count: v.cai_count
 			},
 			comment_count: v.comment_count,
 			share_num: v.sharenum

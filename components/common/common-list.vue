@@ -135,11 +135,34 @@ export default {
 		// 顶踩操作
 		doSupport(type) {
 			this.checkAuth(() => {
-				// 通知父组件
-				this.$emit('doSupport', {
-					type: type,
-					index: this.index
-				});
+				this.$H
+					.post(
+						'/support',
+						{
+							post_id: this.item.id,
+							type: type === 'support' ? 0 : 1
+						},
+						{
+							token: true,
+							native: true
+						}
+					)
+					.then(res => {
+						if (res.errorCode == '40000') {
+							return uni.showToast({
+								title: res.msg,
+								icon: 'none'
+							});
+						}
+						// 通知父组件
+						uni.$emit('updateFollowOrSupport', {
+							type: 'support',
+							data: {
+								type: type,
+								id: this.item.id
+							}
+						});
+					});
 			});
 		},
 		// 评论

@@ -118,10 +118,15 @@ export default {
 				case 'follow': // 关注
 					this.follow(e.data.user_id);
 					break;
-				default:
+				case 'support': // 顶踩
+					this.doSupport(e.data);
 					break;
 			}
 		});
+	},
+	onUnload() {
+		// 如果没有回调,会清除所有事件
+		uni.$off('updateFollowOrSupport', e => {});
 	},
 	// 触底事件
 	onReachBottom() {
@@ -187,6 +192,33 @@ export default {
 				}
 			});
 			uni.showToast({ title: '关注成功' });
+		},
+		// 顶踩操作
+		doSupport(e) {
+			// 拿到当前的选项卡对应的list
+			let no = this.tabIndex + 1;
+			this['list' + no].forEach(item => {
+				if (item.id === e.id) {
+					// 之前没有操作过
+					if (item.support.type === '') {
+						item.support[e.type + '_count']++;
+					} else if (item.support.type === 'support' && e.type === 'unsupport') {
+						// 顶 - 1
+						item.support.support_count--;
+						// 踩 + 1
+						item.support.unsupport_count++;
+					} else if (item.support.type === 'unsupport' && e.type === 'support') {
+						// 之前踩了
+						// 顶 + 1
+						item.support.support_count++;
+						// 踩 - 1
+						item.support.unsupport_count--;
+					}
+					item.support.type = e.type;
+				}
+			});
+			let msg = e.type === 'support' ? '顶' : '踩';
+			uni.showToast({ title: msg + '成功' });
 		}
 	}
 };

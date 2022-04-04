@@ -63,15 +63,15 @@ export default {
 			myData: [
 				{
 					name: '帖子',
-					num: 1
+					num: 0
 				},
 				{
 					name: '动态',
-					num: 1
+					num: 0
 				},
 				{
 					name: '评论',
-					num: 2
+					num: 0
 				},
 				{
 					name: '粉丝',
@@ -90,7 +90,27 @@ export default {
 			return this.user.userpic ? this.user.userpic : '/static/default.jpg';
 		}
 	},
+	onShow() {
+		this.getCounts();
+	},
 	methods: {
+		// 获取用户相关数据
+		getCounts() {
+			this.$H
+				.get(
+					'/user/getcounts/' + this.user.id,
+					{},
+					{
+						token: true
+					}
+				)
+				.then(res => {
+					this.myData[0].num = res.post_count;
+					this.myData[1].num = res.today_posts_count;
+					this.myData[2].num = res.comments_count;
+					this.myData[3].num = res.withfen_count;
+				});
+		},
 		// 打开登录页
 		openLogin() {
 			uni.navigateTo({
