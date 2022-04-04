@@ -214,6 +214,16 @@ export default {
 							});
 							break;
 						case 'user':
+							list = res.list.map(v => {
+								return {
+									id: v.id,
+									avatar: v.userpic,
+									username: v.username,
+									sex: v.userinfo.sex,
+									age: v.userinfo.age,
+									isFollow: false
+								};
+							});
 							break;
 					}
 
