@@ -84,9 +84,6 @@ export default {
 		});
 	},
 	onLoad() {
-		console.log('this.$C', this.$C.webUrl);
-		// this.$store.commit('changeLoginStatus', { num: 123 });
-		console.log('this.$Store', this.$store.state.loginState);
 		uni.getSystemInfo({
 			success: res => {
 				this.scrollH = res.windowHeight - uni.upx2px(110);

@@ -2,7 +2,12 @@
 	<view>
 		<uni-status-bar></uni-status-bar>
 		<view>
-			<view class="iconfont icon-guanbi flex align-center justify-center font-lg" style="width: 100rpx; height: 100rpx" hover-class="bg-light" @click="back"></view>
+			<view
+				class="iconfont icon-guanbi flex align-center justify-center font-lg"
+				style="width: 100rpx; height: 100rpx"
+				hover-class="bg-light"
+				@click="back"
+			></view>
 		</view>
 
 		<view class="text-center" style="padding-top: 130rpx; padding-bottom: 70rpx; font-size: 55rpx">
@@ -12,21 +17,23 @@
 		<view class="px-2">
 			<template v-if="!status">
 				<view class="mb-2">
-					<input type="text" placeholder="昵称/手机号/邮箱" class="border-bottom p-2" v-model="username" />
+					<input v-model="username" type="text" placeholder="昵称/手机号/邮箱" class="border-bottom p-2" />
 				</view>
 				<view class="mb-2 flex align-stretch">
-					<input type="text" placeholder="请输入密码" class="border-bottom p-2 flex-1" v-model="password" />
-					<view class="border-bottom flex align-center justify-center font text-muted" style="width: 150rpx">忘记密码?</view>
+					<input v-model="password" type="text" placeholder="请输入密码" class="border-bottom p-2 flex-1" />
+					<view class="border-bottom flex align-center justify-center font text-muted" style="width: 150rpx">
+						忘记密码?
+					</view>
 				</view>
 			</template>
 
 			<template v-else>
 				<view class="mb-2 flex align-stretch">
 					<view class="border-bottom flex align-center justify-center font px-2">+86</view>
-					<input type="text" placeholder="手机号" class="border-bottom p-2 flex-1" v-model="phone" />
+					<input v-model="phone" type="text" placeholder="手机号" class="border-bottom p-2 flex-1" />
 				</view>
 				<view class="mb-2 flex align-stretch">
-					<input type="text" placeholder="请输入验证码" class="border-bottom p-2 flex-2" v-model="code" />
+					<input v-model="code" type="text" placeholder="请输入验证码" class="border-bottom p-2 flex-2" />
 					<view
 						class="border-bottom flex align-center justify-center font-sm text-white bg-main"
 						:class="codeTime > 0 ? 'bg-main-disabled' : 'bg-main'"
@@ -40,7 +47,15 @@
 		</view>
 
 		<view class="py-2 px-3">
-			<button class="bg-main text-white" style="border-radius: 50rpx; border: 0" type="primary" :disabled="disabled" @click="submit">登录</button>
+			<button
+				class="bg-main text-white"
+				style="border-radius: 50rpx; border: 0"
+				type="primary"
+				:disabled="disabled"
+				@click="submit"
+			>
+				登录
+			</button>
 		</view>
 
 		<view class="flex align-center justify-center pt-2 pb-4">
@@ -141,8 +156,31 @@ export default {
 		// 提交
 		submit() {
 			// 表单验证
-			if (!this.validate()) return;
+			if (this.status) {
+				if (!this.validate()) return;
+			}
 			// 提交后端
+			this.$H
+				.post('/user/login', {
+					username: this.username,
+					password: this.password
+				})
+				.then(res => {
+					console.log('res', res);
+					// 修改vuex的state,持久化存储
+					this.$store.commit('login', res);
+					// 提示和跳转
+					uni.navigateBack({
+						delta: 1
+					});
+					uni.showToast({
+						title: '登录成功',
+						icon: 'none'
+					});
+				})
+				.catch(err => {
+					// 登录失败
+				});
 			// 登录成功处理
 		}
 	}
