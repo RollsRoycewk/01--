@@ -24,21 +24,20 @@
 
 		<divider></divider>
 
-		<view class="p-2 font-md font-weight-bold">
-			最新评论 3
-		</view>
+		<view class="p-2 font-md font-weight-bold">最新评论 {{ info.comment_count }}</view>
 		<view class="px-2">
-			<view class="uni-comment-list">
-				<view class="uni-comment-face">
-					<image src="../../static/default.jpg" mode="widthFix"></image>
-				</view>
-				<view class="uni-comment-body">
-					<view class="uni-comment-top">
-						<text>小猫咪</text>
-					</view>
-					<view class="uni-comment-content">支持国产，支持DCloud!</view>
-					<view class="uni-comment-date">
-						<view>2天前</view>
+			<view v-for="(item, index) in comments" :key="index" class="uni-comment-list">
+				<view v-if="item.fid" style="width: 60rpx;"></view>
+				<view class="flex w-100" :class="item.fid ? 'bg-light rounded p-2' : ''">
+					<view class="uni-comment-face"><image :src="item.userpic"></image></view>
+					<view class="uni-comment-body">
+						<view class="uni-comment-top">
+							<text>{{ item.username }}</text>
+						</view>
+						<view class="uni-comment-content" @click="reply(item.id)">{{ item.data }}</view>
+						<view class="uni-comment-date">
+							<view>{{ item.time }}</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -46,7 +45,7 @@
 
 		<!-- 占位 -->
 		<view style="height: 100rpx;"></view>
-		<bottom-input @submit="submit"></bottom-input>
+		<bottom-input :focus="focus" @blur="blur" @submit="submit"></bottom-input>
 
 		<!-- 分享 -->
 		<more-share ref="share"></more-share>
@@ -57,6 +56,7 @@
 import commonList from '@/components/common/common-list.vue';
 import bottomInput from '@/components/common/bottom-input.vue';
 import moreShare from '@/components/common/more-share.vue';
+import $T from '@/common/time.js';
 
 export default {
 	components: {
@@ -67,7 +67,10 @@ export default {
 	data() {
 		return {
 			// 当前帖子信息
-			info: {}
+			info: {},
+			comments: [],
+			focus: false,
+			reply_id: 0
 		};
 	},
 	computed: {
@@ -116,13 +119,45 @@ export default {
 			this.$H.get('/post/' + this.info.id).then(res => {
 				this.info.content = res.detail.content;
 			});
+
+			// 获取评论
+			this.getComments();
 		},
 		doComment() {},
 		doShare() {
 			this.$refs.share.open();
 		},
+		// 提交评论
 		submit(data) {
-			console.log('data', data);
+			if (data === '') {
+				return uni.showToast({
+					title: '评论不能为空',
+					icon: 'none'
+				});
+			}
+			uni.showLoading({
+				title: '评论中...',
+				mask: false
+			});
+			this.$H
+				.post(
+					'/post/comment',
+					{
+						fid: this.reply_id,
+						data: data,
+						post_id: this.info.id
+					},
+					{
+						token: true
+					}
+				)
+				.then(res => {
+					uni.hideLoading();
+					this.getComments();
+				})
+				.catch(err => {
+					uni.hideLoading();
+				});
 		},
 		// 预览图片
 		preview(index) {
@@ -166,6 +201,52 @@ export default {
 			uni.showToast({
 				title: msg
 			});
+		},
+		// 获取评论列表
+		getComments() {
+			this.$H.get('/post/' + this.info.id + '/comment').then(res => {
+				this.comments = this.__ArrSort(res.list);
+				this.info.comment_count = this.comments.length;
+				uni.$emit('updateCommentsCount', {
+					id: this.info.id,
+					count: this.info.comment_count
+				});
+			});
+		},
+		// 重新整理评论格式
+		__ArrSort(arr, id = 0) {
+			var temp = [],
+				lev = 0;
+			var forFn = function(arr, id, lev) {
+				for (var i = 0; i < arr.length; i++) {
+					var item = arr[i];
+					if (item.fid == id) {
+						item.lev = lev;
+						temp.push({
+							id: item.id,
+							fid: item.fid,
+							userid: item.user.id,
+							userpic: item.user.userpic,
+							username: item.user.username,
+							time: $T.gettime(item.create_time),
+							data: item.data
+						});
+						forFn(arr, item.id, lev + 1);
+					}
+				}
+			};
+			forFn(arr, id, lev);
+			return temp;
+		},
+		// 回复评论
+		reply(id) {
+			this.reply_id = id;
+			this.focus = true;
+		},
+		// 输入框失去焦点
+		blur() {
+			this.reply_id = 0;
+			this.focus = false;
 		}
 	}
 };

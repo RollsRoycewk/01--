@@ -106,11 +106,23 @@ export default {
 					break;
 			}
 		});
+
+		// 监听评论数变化
+		uni.$on('updateCommentsCount', ({ id, count }) => {
+			this.newsList.forEach(tab => {
+				tab.list.forEach(item => {
+					if (item.id === id) {
+						item.comment_count = count;
+					}
+				});
+			});
+		});
 	},
 	onUnload() {
 		// 如果没有回调,会清除所有事件
 		uni.$off('updateFollowOrSupport', e => {});
 		uni.$off('updateIndex', e => {});
+		uni.$off('updateCommentsCount', e => {});
 	},
 	methods: {
 		// 上拉加载更多
