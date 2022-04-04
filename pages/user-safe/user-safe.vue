@@ -32,7 +32,9 @@ export default {
 			},
 			{
 				name: '邮箱绑定',
-				data: this.user.email ? this.user.email : '未绑定'
+				data: this.user.email ? this.user.email : '未绑定',
+				type: 'navigateTo',
+				url: '/pages/user-email/user-email'
 			}
 		];
 		this.list = [...list];
