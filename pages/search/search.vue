@@ -84,6 +84,17 @@ export default {
 		switch (this.type) {
 			case 'post':
 				pageTitle = '帖子';
+
+				// 监听关注和顶踩操作
+				uni.$on('updateFollowOrSupport', e => {
+					switch (e.type) {
+						case 'follow': // 关注
+							this.follow(e.data.user_id);
+							break;
+						default:
+							break;
+					}
+				});
 				break;
 			case 'topic':
 				pageTitle = '话题';
@@ -127,7 +138,22 @@ export default {
 			uni.stopPullDownRefresh();
 		});
 	},
+	onUnload() {
+		if (this.type === 'post') {
+			uni.$off('updateFollowOrSupport');
+		}
+	},
 	methods: {
+		// 关注
+		follow(user_id) {
+			// 找到当前作者的所有列表
+			this.searchList.forEach(item => {
+				if (item.user_id === user_id) {
+					item.isFollow = true;
+				}
+			});
+			uni.showToast({ title: '关注成功' });
+		},
 		// 点击搜索历史
 		clickSearchHistory(text) {
 			this.searchText = text;

@@ -91,6 +91,19 @@ export default {
 		});
 		// 根据选项卡获取数据
 		this.getData();
+		// 监听关注和顶踩操作
+		uni.$on('updateFollowOrSupport', e => {
+			switch (e.type) {
+				case 'follow': // 关注
+					this.follow(e.data.user_id);
+					break;
+				default:
+					break;
+			}
+		});
+	},
+	onUnload() {
+		uni.$off('updateFollowOrSupport');
 	},
 	methods: {
 		// 上拉加载更多

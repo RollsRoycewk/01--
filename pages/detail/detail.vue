@@ -79,6 +79,17 @@ export default {
 		// 初始化
 		if (e.detail) {
 			this.__init(JSON.parse(decodeURIComponent(e.detail)));
+
+			// 监听关注和顶踩操作
+			uni.$on('updateFollowOrSupport', e => {
+				switch (e.type) {
+					case 'follow': // 关注
+						this.follow();
+						break;
+					default:
+						break;
+				}
+			});
 		}
 	},
 	onNavigationBarButtonTap() {

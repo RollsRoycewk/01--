@@ -111,6 +111,17 @@ export default {
 		}
 		// 加载数据
 		this.getData();
+
+		// 监听关注和顶踩操作
+		uni.$on('updateFollowOrSupport', e => {
+			switch (e.type) {
+				case 'follow': // 关注
+					this.follow(e.data.user_id);
+					break;
+				default:
+					break;
+			}
+		});
 	},
 	// 触底事件
 	onReachBottom() {
@@ -161,6 +172,21 @@ export default {
 			// 请求数据
 			this['page' + no]++;
 			this.getData();
+		},
+		// 关注
+		follow(user_id) {
+			// 找到当前作者的所有列表
+			this.list1.forEach(item => {
+				if (item.user_id === user_id) {
+					item.isFollow = true;
+				}
+			});
+			this.list2.forEach(item => {
+				if (item.user_id === user_id) {
+					item.isFollow = true;
+				}
+			});
+			uni.showToast({ title: '关注成功' });
 		}
 	}
 };

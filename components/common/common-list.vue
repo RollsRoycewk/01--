@@ -114,7 +114,12 @@ export default {
 					)
 					.then(res => {
 						// 通知父组件
-						this.$emit('follow', this.item.user_id);
+						uni.$emit('updateFollowOrSupport', {
+							type: 'follow',
+							data: {
+								user_id: this.item.user_id
+							}
+						});
 					});
 			});
 		},
