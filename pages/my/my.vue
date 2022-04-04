@@ -91,7 +91,20 @@ export default {
 		}
 	},
 	onShow() {
-		this.getCounts();
+		if (this.loginStatus) {
+			this.getCounts();
+		}
+	},
+	watch: {
+		loginStatus(newValue, oldValue) {
+			if (newValue) {
+				this.getCounts();
+			} else {
+				this.myData.forEach(item => {
+					item.num = 0;
+				});
+			}
+		}
 	},
 	methods: {
 		// 获取用户相关数据
@@ -101,7 +114,9 @@ export default {
 					'/user/getcounts/' + this.user.id,
 					{},
 					{
-						token: true
+						token: true,
+						// 不需要提示
+						notoast: true
 					}
 				)
 				.then(res => {
