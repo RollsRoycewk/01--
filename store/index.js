@@ -27,7 +27,7 @@ export default new Vuex.Store({
 		// 修改用户信息(手机号,邮箱,密码)
 		editUserInfo(state, { key, value }) {
 			state.user[key] = value;
-			uni.setStorageSync('user', JSON.stringify(state.user));
+			uni.setStorageSync('user', state.user);
 		}
 	}
 });
