@@ -89,6 +89,10 @@ export default {
 				this.scrollH = res.windowHeight - uni.upx2px(110);
 			}
 		});
+		// 监听刷新首页
+		uni.$on('updateIndex', () => {
+			this.getData();
+		});
 		// 根据选项卡获取数据
 		this.getData();
 		// 监听关注和顶踩操作
@@ -106,6 +110,7 @@ export default {
 	onUnload() {
 		// 如果没有回调,会清除所有事件
 		uni.$off('updateFollowOrSupport', e => {});
+		uni.$off('updateIndex', e => {});
 	},
 	methods: {
 		// 上拉加载更多

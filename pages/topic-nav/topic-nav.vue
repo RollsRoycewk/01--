@@ -27,7 +27,7 @@
 					<template v-if="item.list.length">
 						<block v-for="(v, i) in item.list" :key="i">
 							<!-- 列表 -->
-							<topic-list :item="v" :index="i"></topic-list>
+							<topic-list :item="v" :index="i" :choose="choose"></topic-list>
 						</block>
 						<!-- 上拉加载 -->
 						<load-more :loadmore="item.loadmore"></load-more>
@@ -65,7 +65,8 @@ export default {
 			tabIndex: 0,
 			scrollInto: '',
 			tabBars: [],
-			newsList: []
+			newsList: [],
+			choose: false
 		};
 	},
 	// 监听点击导航栏搜索框
@@ -80,7 +81,7 @@ export default {
 			url: '../add-input/add-input'
 		});
 	},
-	onLoad() {
+	onLoad(e) {
 		uni.getSystemInfo({
 			success: res => {
 				this.scrollH = res.windowHeight - uni.upx2px(110);
@@ -88,6 +89,13 @@ export default {
 		});
 		// 根据选项卡获取数据
 		this.getData();
+
+		if (e.choose) {
+			uni.setNavigationBarTitle({
+				title: '选择话题'
+			});
+			this.choose = true;
+		}
 	},
 	methods: {
 		// 上拉加载更多
