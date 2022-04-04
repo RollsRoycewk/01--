@@ -1,8 +1,7 @@
 <template>
 	<view>
 		<template v-if="loginStatus">
-			<uni-list-item title="账号与安全" @click="open('user-password')"></uni-list-item>
-			<uni-list-item title="绑定邮箱" @click="open('user-email')"></uni-list-item>
+			<uni-list-item title="账号与安全" @click="open('user-safe')"></uni-list-item>
 			<uni-list-item title="资料编辑" @click="open('user-userinfo')"></uni-list-item>
 		</template>
 
