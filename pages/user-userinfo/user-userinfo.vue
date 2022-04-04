@@ -50,7 +50,9 @@
 		</uni-list-item>
 
 		<view class="py-2 px-3">
-			<button class="bg-main text-white" style="border-radius: 50rpx;border: 0;" type="primary">完成</button>
+			<button class="bg-main text-white" style="border-radius: 50rpx;border: 0;" type="primary" @click="submit">
+				完成
+			</button>
 		</view>
 
 		<mpvue-city-picker
@@ -88,6 +90,17 @@ export default {
 			cityPickerValueDefault: [0, 0, 1],
 			pickerText: ''
 		};
+	},
+	onLoad() {
+		let userinfo = this.user.userinfo;
+		if (userinfo) {
+			this.pickerText = userinfo.path;
+			this.username = this.user.username;
+			this.sex = userinfo.sex;
+			this.emotion = userinfo.qg;
+			this.job = userinfo.job;
+			this.birthday = userinfo.birthday;
+		}
 	},
 	computed: {
 		...mapState({
@@ -182,6 +195,35 @@ export default {
 					this.job = JobArray[res.tapIndex];
 				}
 			});
+		},
+		// 提交
+		submit() {
+			let obj = {
+				name: this.username,
+				sex: this.sex,
+				qg: this.emotion,
+				job: this.job,
+				birthday: this.birthday,
+				path: this.pickerText
+			};
+			this.$H
+				.post('/edituserinfo', obj, {
+					token: true
+				})
+				.then(res => {
+					this.$store.commit('editUserInfo', {
+						key: 'username',
+						value: this.username
+					});
+					this.$store.commit('editUserUserInfo', obj);
+					uni.navigateBack({
+						delta: 1
+					});
+					uni.showToast({
+						title: '修改资料成功',
+						icon: 'none'
+					});
+				});
 		}
 	}
 };

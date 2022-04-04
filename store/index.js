@@ -28,6 +28,17 @@ export default new Vuex.Store({
 		editUserInfo(state, { key, value }) {
 			state.user[key] = value;
 			uni.setStorageSync('user', state.user);
+		},
+		// 修改资料
+		editUserUserInfo(state, obj) {
+			if (state.user.userinfo) {
+				state.user.userinfo.sex = obj.sex;
+				state.user.userinfo.qg = obj.qg;
+				state.user.userinfo.job = obj.job;
+				state.user.userinfo.path = obj.path;
+				state.user.userinfo.birthday = obj.birthday;
+				uni.setStorageSync('user', state.user);
+			}
 		}
 	}
 });
