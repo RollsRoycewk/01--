@@ -71,7 +71,7 @@
 			<view style="height: 1rpx; background-color: #dddddd; width: 100rpx"></view>
 		</view>
 
-		<other-login></other-login>
+		<other-login back></other-login>
 
 		<view class="flex align-center justify-center text-muted">
 			注册即代表同意
