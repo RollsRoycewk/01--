@@ -12,9 +12,9 @@
 
 		<!-- 已登录 -->
 		<view v-else class="flex align-center p-2" hover-class="bg-light">
-			<image src="/static/default.jpg" style="width: 100rpx;height: 100rpx;" class="rounded-circle"></image>
+			<image :src="avatar" style="width: 100rpx;height: 100rpx;" class="rounded-circle"></image>
 			<view class="flex flex-column flex-1 px-2">
-				<text class="font-lg font-weight-bold text-dark">昵称</text>
+				<text class="font-lg font-weight-bold text-dark">{{ user.username }}</text>
 				<text class="font text-muted">总帖子10 今日发帖0</text>
 			</view>
 			<text class="iconfont icon-jinru"></text>
@@ -58,9 +58,6 @@ export default {
 		uniListItem,
 		otherLogin
 	},
-	onShow() {
-		console.log('this', this.$store.state);
-	},
 	data() {
 		return {
 			myData: [
@@ -85,8 +82,13 @@ export default {
 	},
 	computed: {
 		...mapState({
-			loginStatus: state => state.loginStatus
-		})
+			loginStatus: state => state.loginStatus,
+			user: state => state.user
+		}),
+		// 用户头像
+		avatar() {
+			return this.user.userpic ? this.user.userpic : '/static/default.jpg';
+		}
 	},
 	methods: {
 		// 打开登录页

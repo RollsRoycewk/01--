@@ -52,9 +52,10 @@
 				style="border-radius: 50rpx; border: 0"
 				type="primary"
 				:disabled="disabled"
+				:loading="loading"
 				@click="submit"
 			>
-				登录
+				{{ loading ? '登录中...' : '登录' }}
 			</button>
 		</view>
 
@@ -95,7 +96,8 @@ export default {
 			password: '',
 			phone: '',
 			code: '',
-			codeTime: 0
+			codeTime: 0,
+			loading: false
 		};
 	},
 	computed: {
@@ -127,17 +129,37 @@ export default {
 		},
 		// 获取验证码
 		getCode() {
+			// 防止重复获取
 			if (this.codeTime) return;
-			// 倒计时
-			this.codeTime = 60;
-			let timer = setInterval(() => {
-				if (this.codeTime >= 1) {
-					this.codeTime--;
-				} else {
-					this.codeTime = 0;
-					clearInterval(timer);
-				}
-			}, 1000);
+			// 验证手机号
+			if (!this.validate()) return;
+			// 请求数据
+			this.$H
+				.post(
+					'/user/sendcode',
+					{
+						phone: this.phone
+					},
+					{
+						native: true
+					}
+				)
+				.then(res => {
+					uni.showToast({
+						title: res.msg,
+						icon: 'none'
+					});
+					// 倒计时
+					this.codeTime = 60;
+					let timer = setInterval(() => {
+						if (this.codeTime >= 1) {
+							this.codeTime--;
+						} else {
+							this.codeTime = 0;
+							clearInterval(timer);
+						}
+					}, 1000);
+				});
 		},
 		// 表单验证
 		validate() {
@@ -156,15 +178,32 @@ export default {
 		// 提交
 		submit() {
 			// 表单验证
+			let url = '';
+			let data = '';
+
 			if (this.status) {
 				if (!this.validate()) return;
-			}
-			// 提交后端
-			this.$H
-				.post('/user/login', {
+				url = '/user/phonelogin';
+				data = {
+					phone: this.phone,
+					code: this.code
+				};
+			} else {
+				// 账号密码登录
+				url = '/user/login';
+				data = {
 					username: this.username,
 					password: this.password
-				})
+				};
+			}
+			// 提交后端
+			this.loading = true;
+
+			console.log('url', url);
+			console.log('data', data);
+
+			this.$H
+				.post(url, data)
 				.then(res => {
 					console.log('res', res);
 					// 修改vuex的state,持久化存储
@@ -177,9 +216,12 @@ export default {
 						title: '登录成功',
 						icon: 'none'
 					});
+
+					this.loading = false;
 				})
 				.catch(err => {
 					// 登录失败
+					this.loading = false;
 				});
 			// 登录成功处理
 		}

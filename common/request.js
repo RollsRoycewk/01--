@@ -26,7 +26,7 @@ export default {
 						});
 						return rej(result.data);
 					}
-					res(result.data.data);
+					res(result.data.data || result.data);
 				},
 				fail: error => {
 					uni.showToast({
