@@ -14,6 +14,12 @@ export default new Vuex.Store({
 			state.loginStatus = true;
 			state.user = user;
 			uni.setStorageSync('user', user);
+		},
+		// 退出登录
+		logout(state) {
+			state.loginStatus = false;
+			state.user = {};
+			uni.removeStorageSync('user');
 		}
 	}
 });
