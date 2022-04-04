@@ -166,11 +166,16 @@ export default {
 			}
 		},
 		// 关注
-		follow(index) {
-			this.newsList[this.tabIndex].list[index].isFollow = true;
-			uni.showToast({
-				title: '关注成功'
+		follow(user_id) {
+			// 找到当前作者的所有列表
+			this.newsList.forEach(tab => {
+				tab.list.forEach(item => {
+					if (item.user_id === user_id) {
+						item.isFollow = true;
+					}
+				});
 			});
+			uni.showToast({ title: '关注成功' });
 		},
 		// 顶踩操作
 		doSupport(e) {

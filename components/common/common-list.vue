@@ -102,9 +102,20 @@ export default {
 		// 关注
 		follow() {
 			this.checkAuth(() => {
-				// 通知父组件
-				console.log('this', this.index);
-				this.$emit('follow', this.index);
+				this.$H
+					.post(
+						'/follow',
+						{
+							follow_id: this.item.user_id
+						},
+						{
+							token: true
+						}
+					)
+					.then(res => {
+						// 通知父组件
+						this.$emit('follow', this.item.user_id);
+					});
 			});
 		},
 		// 进入详情页
