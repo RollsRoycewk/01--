@@ -69,54 +69,6 @@
 </template>
 
 <script>
-const demo = [
-	{
-		username: '昵称',
-		userpic: '/static/default.jpg',
-		newstime: '2019-10-20 下午04:30',
-		isFollow: true,
-		title: '我是标题',
-		titlepic: '/static/demo/datapic/11.jpg',
-		support: {
-			type: 'support', // 顶
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 2,
-		share_num: 2
-	},
-	{
-		username: '昵称',
-		userpic: '/static/default.jpg',
-		newstime: '2019-10-20 下午04:30',
-		isFollow: true,
-		title: '我是标题',
-		titlepic: '',
-		support: {
-			type: 'unsupport', // 踩
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 2,
-		share_num: 2
-	},
-	{
-		username: '昵称',
-		userpic: '/static/default.jpg',
-		newstime: '2019-10-20 下午04:30',
-		isFollow: true,
-		title: '我是标题',
-		titlepic: '',
-		support: {
-			type: '', // 未操作
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 2,
-		share_num: 2
-	}
-];
-
 import uniNavBar from '@/components/uni-ui/uni-nav-bar/uni-nav-bar.vue';
 import commonList from '@/components/common/common-list.vue';
 import divider from '@/components/common/divider';
@@ -147,6 +99,7 @@ export default {
 					name: '话题'
 				}
 			],
+			page: 1,
 			// 关注列表
 			list: [],
 			// 1.上拉加载更多  2.加载中... 3.没有更多了
@@ -157,20 +110,47 @@ export default {
 			swiperList: []
 		};
 	},
+	onShow() {
+		this.page = 1;
+		this.getList();
+	},
 	onLoad() {
 		uni.getSystemInfo({
 			success: res => {
 				this.scrollH = res.windowHeight - res.statusBarHeight - 44;
 			}
 		});
-		// 加载测试数据
-		this.list = demo;
 		// 获取数据
 		this.getTopicNav();
 		this.getSwipers();
 		this.getHotTopic();
 	},
 	methods: {
+		// 获取关注好友文章列表
+		getList() {
+			let isrefresh = this.page === 1;
+			this.$H
+				.get(
+					'/followpost/' + this.page,
+					{},
+					{
+						token: true,
+						notoast: true
+					}
+				)
+				.then(res => {
+					let list = res.list.map(v => {
+						return this.$U.formatCommonList(v);
+					});
+					this.list = isrefresh ? list : [...this.list, ...list];
+					this.loadmore = list.length < 10 ? '没有更多了' : '上拉加载更多';
+				})
+				.catch(err => {
+					if (!isrefresh) {
+						this.page--;
+					}
+				});
+		},
 		// 获取热门分类
 		getTopicNav() {
 			this.$H.get('/topicclass').then(res => {
@@ -255,13 +235,9 @@ export default {
 			if (this.loadmore !== '上拉加载更多') return;
 			// 设置加载状态
 			this.loadmore = '加载中...';
-			// 模拟请求数据
-			setTimeout(() => {
-				// 加载数据
-				this.list = [...this.list, ...this.list];
-				// 设置加载状态
-				this.loadmore = '上拉加载更多';
-			}, 1500);
+			// 请求数据
+			this.page++;
+			this.getList();
 		}
 	}
 };
