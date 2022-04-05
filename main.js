@@ -26,7 +26,7 @@ import $H from './common/request';
 Vue.prototype.$H = $H;
 
 // 权限验证操作
-Vue.prototype.checkAuth = callback => {
+Vue.prototype.checkAuth = (callback, checkPhone = true) => {
 	// 权限验证
 	if (!store.state.loginStatus) {
 		uni.showToast({
@@ -37,6 +37,18 @@ Vue.prototype.checkAuth = callback => {
 			url: '/pages/login/login'
 		});
 	}
+
+	// 验证是否绑定手机号
+	if (checkPhone && !store.state.user.phone) {
+		uni.showToast({
+			title: '请先绑定手机号',
+			icon: 'none'
+		});
+		return uni.navigateTo({
+			url: '/pages/user-phone/user-phone'
+		});
+	}
+
 	callback();
 };
 

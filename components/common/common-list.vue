@@ -10,7 +10,7 @@
 					:src="item.titlepic"
 					lazy-load
 					style="width: 65rpx;height: 65rpx;"
-					@click="openSpace"
+					@click="openSpace(item.user_id)"
 				></image>
 				<!-- 昵称/发布时间 -->
 				<view>
@@ -20,8 +20,8 @@
 			</view>
 			<!-- 按钮 -->
 			<view
-				v-if="!item.isFollow"
-				class="flex align-center justify-center bg-main text-white animated faster"
+				v-if="!item.isFollow && user.id !== item.user_id"
+				class="flex align-center justify-center rounded bg-main text-white animated faster"
 				style="width: 90rpx;height: 50rpx;"
 				hover-class="jello"
 				@click="follow"
@@ -79,6 +79,7 @@
 
 <script>
 import $T from '@/common/time.js';
+import { mapState } from 'vuex';
 
 export default {
 	filters: {
@@ -94,10 +95,15 @@ export default {
 			default: false
 		}
 	},
+	computed: {
+		...mapState({
+			user: state => state.user
+		})
+	},
 	methods: {
 		// 打开个人空间
-		openSpace() {
-			uni.navigateTo({ url: '/pages/user-space/user-space' });
+		openSpace(user_id) {
+			uni.navigateTo({ url: '/pages/user-space/user-space?user_id=' + user_id });
 		},
 		// 关注
 		follow() {

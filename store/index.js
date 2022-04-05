@@ -16,6 +16,7 @@ export default new Vuex.Store({
 			state.user = user;
 			state.token = state.user.token;
 			uni.setStorageSync('user', user);
+			uni.$emit('updateIndex');
 		},
 		// 退出登录
 		logout(state) {
@@ -23,6 +24,7 @@ export default new Vuex.Store({
 			state.user = {};
 			state.token = false;
 			uni.removeStorageSync('user');
+			uni.$emit('updateIndex');
 		},
 		// 修改用户信息(手机号,邮箱,密码)
 		editUserInfo(state, { key, value }) {
