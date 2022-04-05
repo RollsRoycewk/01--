@@ -36,7 +36,7 @@
 			></image>
 		</view>
 
-		<uni-list-item title="浏览历史" show-extra-icon>
+		<uni-list-item title="浏览历史" show-extra-icon @click="openHistory">
 			<text slot="icon" class="iconfont icon-liulan"></text>
 		</uni-list-item>
 		<uni-list-item title="社区认证" show-extra-icon>
@@ -130,6 +130,11 @@ export default {
 		openLogin() {
 			uni.navigateTo({
 				url: '../login/login'
+			});
+		},
+		openHistory() {
+			uni.navigateTo({
+				url: '../history/history'
 			});
 		}
 	},
