@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 import $C from '@/common/config.js';
+import $http from '@/common/request.js';
 
 export default new Vuex.Store({
 	state: {
@@ -42,6 +43,7 @@ export default new Vuex.Store({
 				console.log('socket-连接已关闭');
 				state.IsOpen = false;
 				state.SocketTask = false;
+				state.IsOnline = false;
 				// 清空会话列表
 				// 更新未读数提示
 			});
@@ -51,12 +53,52 @@ export default new Vuex.Store({
 				console.log('socket-连接错误');
 				state.IsOpen = false;
 				state.SocketTask = false;
+				state.IsOnline = false;
 			});
 
 			// 监听接收消息
 			state.SocketTask.onMessage(e => {
 				console.log('socket-监听接收消息', e);
+
+				// 字符串转json
+				let res = JSON.parse(e.data);
+
+				// 绑定返回结果
+				if (res.type == 'bind') {
+					// 用户绑定
+					return dispatch('userBind', res.data);
+				}
 			});
+		},
+		// 用户绑定
+		userBind({ state, dispatch }, client_id) {
+			$http
+				.post(
+					'/chat/bind',
+					{
+						type: 'bind',
+						client_id: client_id
+					},
+					{
+						token: true
+					}
+				)
+				.then(data => {
+					console.log('绑定成功', data);
+
+					// 开始上线
+					if (data.status && status.type == 'bind') {
+						// 改为上线状态
+						state.IsOnline = true;
+
+						// 初始化会话列表
+						// 获取未读信息
+					}
+				})
+				.catch(err => {
+					// 失败 退出登录,重新链接等处理
+					console.log('socket-err', err);
+				});
 		}
 	},
 	mutations: {
