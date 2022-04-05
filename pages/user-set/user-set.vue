@@ -78,7 +78,12 @@ export default {
 				content: '是否要退出登录',
 				success: res => {
 					if (res.confirm) {
+						// 退出登录
 						this.$store.commit('logout');
+
+						// 关闭websocket
+						this.$store.dispatch('closeSocket');
+
 						uni.navigateBack({
 							delta: 1
 						});

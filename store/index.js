@@ -115,6 +115,7 @@ export default new Vuex.Store({
 						state.IsOnline = true;
 
 						// 初始化会话列表
+						dispatch('initChatList');
 						// 获取未读信息
 					}
 				})
@@ -122,6 +123,31 @@ export default new Vuex.Store({
 					// 失败 退出登录,重新链接等处理
 					console.log('socket-err', err);
 				});
+		},
+		// 获取未读信息
+		getUnreadMessages({ state, dispatch }) {
+			console.log('获取未读信息中...');
+			$http
+				.post(
+					'/chat/get',
+					{},
+					{
+						token: true
+					}
+				)
+				.then(data => {
+					console.log('获取未读信息成功', data);
+					data.forEach(msg => {
+						// 处理接收消息
+						dispatch('handleChatMessage', msg);
+					});
+				});
+		},
+		// 初始化会话列表
+		async initChatList({ state, dispatch, commit }) {
+			state.chatList = await dispatch('getChatList');
+			console.log('初始化会话列表', state.chatList);
+			dispatch('updateTabbarBadge');
 		},
 		// 处理接收消息
 		handleChatMessage({ state, dispatch }, data) {
@@ -266,6 +292,12 @@ export default new Vuex.Store({
 				list,
 				toId
 			});
+		},
+		// 关闭socket
+		closeSocket({ state }) {
+			if (state.IsOpen) {
+				state.SocketTask.close();
+			}
 		}
 	},
 	getters: {
@@ -313,6 +345,90 @@ export default new Vuex.Store({
 		// 存储会话列表
 		saveChatList(state, list) {
 			uni.setStorageSync('chatlist_' + state.user.id, JSON.stringify(list));
+		},
+		// 创建聊天对象
+		createToUser(state, ToUser) {
+			state.ToUser = ToUser;
+		},
+		// 关闭聊天对象
+		closeToUser(state) {
+			state.ToUser = {
+				user_id: 0,
+				username: '',
+				userpic: ''
+			};
+		},
+		// 发送消息
+		async sendChatMessage({ dispatch }, data) {
+			/*
+			{
+				data:"发送内容",
+				type:"text"
+			}
+			*/
+			console.log('发送消息');
+			// 组织发送消息格式
+			let sendData = await dispatch('formatSendData', data);
+			console.log('发送消息数据格式', sendData);
+			/*
+			{
+				to_id:1,      // 接收人
+				from_id:12,	  // 发送人id
+				from_username:"某某",  // 发送人昵称
+				from_userpic:"http://pic136.nipic.com/file/20170725/10673188_152559977000_2.jpg",
+				type:"text",	 // 发送类型
+				data:"你好啊",	 // 发送内容
+				time:151235451   // 接收到的时间
+			}
+			*/
+			// 更新与某个用户的消息历史记录
+			dispatch('updateChatDetailToUser', {
+				data: sendData,
+				send: true
+			});
+			// 更新会话列表
+			dispatch('updateChatList', sendData);
+			return sendData;
+		},
+		// 组织发送格式
+		formatSendData({ state }, data) {
+			return {
+				to_id: state.ToUser.user_id,
+				from_id: state.user.id,
+				from_username: state.user.username,
+				from_userpic: state.user.userpic ? state.user.userpic : '/static/default.jpg',
+				type: data.type,
+				data: data.data,
+				time: new Date().getTime()
+			};
+		},
+		// 读取当前会话(去除未读数,更新tabbar)
+		readChatMessage({ state, commit, dispatch }, item) {
+			/*
+			{
+				"user_id": 331,
+				"avatar": "/static/default.jpg",
+				"username": "13450772004",
+				"update_time": 1578216988,
+				"data": "看看有么有移除",
+				"noread": 0,
+				"type": "text",
+				"time": 1578226151777
+			}
+			*/
+			console.log('读取当前会话(去除未读数,更新tabbar)', item);
+			// 没有未读信息
+			if (item.noread === 0) return;
+			// 拿到当前会话 设置未读数为0
+			state.chatList.forEach(v => {
+				if (v.user_id == item.user_id) {
+					v.noread = 0;
+				}
+			});
+			// 存储
+			commit('saveChatList', state.chatList);
+			// 更新未读数
+			dispatch('updateTabbarBadge');
 		}
 	}
 });
