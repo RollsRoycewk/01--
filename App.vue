@@ -5,10 +5,6 @@ export default {
 		// 检测更新
 		// 网络监听
 		// 初始化数据
-		this.$U.onNetWork();
-
-		// 测试socket
-		this.$store.dispatch('openSocket');
 	},
 	onShow: function() {
 		console.log('App Show');
