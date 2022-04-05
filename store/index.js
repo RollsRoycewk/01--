@@ -17,7 +17,13 @@ export default new Vuex.Store({
 		// SocketTask
 		SocketTask: false,
 		// 是否上线(会员id绑定客户端id,验证用户身份,通过则绑定)
-		IsOnline: false
+		IsOnline: false,
+		// 当前聊天对象（进入聊天页面获取）
+		ToUser: {
+			user_id: 0, // 通过判断user_id是否为0，当前用户处在什么场景下
+			username: '',
+			userpic: ''
+		}
 	},
 	actions: {
 		// 打开socket
@@ -125,12 +131,12 @@ export default new Vuex.Store({
 			uni.$emit('UserChat', data);
 
 			// 存储到chatdetail
-			/**
-			 * dispatch('updateChatDetailToUser',{
-			 * 	 data,
-			 *   send:false
-			 * })
-			 */
+
+			dispatch('updateChatDetailToUser', {
+				data,
+				send: false
+			});
+
 			// 更新会话列表
 			dispatch('updateChatList', data);
 		},
@@ -205,6 +211,20 @@ export default new Vuex.Store({
 				noread: 0 // 未读数
 			};
 		},
+		// 消息转对话对象
+		formatChatDetailObject({ state }, e) {
+			let data = e.data;
+			console.log('formatChatDetailObject');
+			console.log(e);
+			return {
+				user_id: e.send ? state.user.id : data.from_id,
+				avatar: e.send ? state.user.userpic : data.from_userpic,
+				username: e.send ? state.user.username : data.from_username,
+				data: data.data,
+				type: data.type,
+				create_time: new Date().getTime()
+			};
+		},
 		updateTabbarBadge({ state, getters }) {
 			let total = getters.totalNpread;
 
@@ -222,6 +242,29 @@ export default new Vuex.Store({
 			uni.setTabBarBadge({
 				index: 2,
 				text: total > 99 ? '99+' : total.toString()
+			});
+		},
+		// 获取与某个用户的聊天内容列表
+		getChatDetailToUser({ state }, toId = 0) {
+			// chatdetail_[当前用户id]_[聊天对象id]
+			let myId = state.user.id;
+			toId = toId ? toId : state.ToUser.user_id;
+			let key = 'chatdetail_' + myId + '_' + toId;
+			let list = uni.getStorageSync(key);
+			return list ? JSON.parse(list) : [];
+		},
+		// 更新与某个用户聊天内容列表
+		async updateChatDetailToUser({ state, dispatch, commit }, e) {
+			console.log('更新与某个用户聊天内容列表', e);
+			let data = e.data;
+			let toId = e.send ? state.ToUser.user_id : data.from_id;
+			// 获取与某个用户聊天内容的历史记录
+			let list = await dispatch('getChatDetailToUser', toId);
+			list.push(await dispatch('formatChatDetailObject', e));
+			// 存储到本地存储
+			commit('saveChatDetail', {
+				list,
+				toId
 			});
 		}
 	},
