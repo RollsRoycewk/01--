@@ -17,7 +17,7 @@ module.exports = {
 		port: '8081',
 		proxy: {
 			'/api/v1': {
-				target: 'https://testsocket.wangkai.zone/api/v1',
+				target: 'http://ceshi2.dishait.cn/api/v1',
 				pathRewrite: {
 					'/api/v1': ''
 				}

@@ -1,16 +1,19 @@
 <script>
 export default {
-	onLaunch: function () {
+	onLaunch: function() {
 		console.log('App Launch');
 		// 检测更新
 		// 网络监听
 		// 初始化数据
 		this.$U.onNetWork();
+
+		// 测试socket
+		this.$store.dispatch('openSocket');
 	},
-	onShow: function () {
+	onShow: function() {
 		console.log('App Show');
 	},
-	onHide: function () {
+	onHide: function() {
 		console.log('App Hide');
 	}
 };
