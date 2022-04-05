@@ -36,6 +36,41 @@ export default {
 	onReady() {
 		this.pageToBottom();
 	},
+	// 页面加载前
+	onLoad(e) {
+		if (!e.user) {
+			uni.navigateBack({
+				delta: 1
+			});
+			return uni.showToast({
+				title: '聊天对象不存在',
+				icon: 'none'
+			});
+		}
+		let ToUser = JSON.parse(e.user);
+
+		console.log('ToUser', ToUser);
+
+		// 创建聊天对象
+		this.$store.commit('createToUser', ToUser);
+		// 获取当前聊天对象的聊天记录
+		this.$store.dispatch('getChatDetailToUser').then(list => {
+			console.log('[user-chat]获取当前聊天对象的聊天记录', list);
+			this.list = list;
+		});
+
+		// 开启监听接收聊天信息
+		// 开启监听接收聊天信息
+		uni.$on('UserChat', res => {
+			console.log('[user-chat]接收聊天信息', res);
+			if (res.from_id === ToUser.user_id) {
+				this.renderPage({
+					data: res,
+					send: false
+				});
+			}
+		});
+	},
 	data() {
 		return {
 			scrollInto: '',
@@ -124,23 +159,42 @@ export default {
 			]
 		};
 	},
+	// 页面销毁前
+	beforeDestroy() {
+		// 关闭聊天对象
+		this.$store.commit('closeToUser');
+		// 移除监听聊天信息事件
+		uni.$off('UserChat', () => {});
+	},
 	methods: {
-		// 发送消息
-		submit(data) {
-			let obj = {
-				user_id: 1,
-				avatar: '/static/default.jpg',
-				username: '昵称',
-				type: 'text',
-				data: data,
-				create_time: new Date().getTime()
-			};
+		// 渲染到页面
+		renderPage(e) {
+			this.$store.dispatch('formatChatDetailObject', e).then(msg => {
+				this.list.push(msg);
+				// 滚动到底部
+				this.pageToBottom();
+			});
+		},
+		// 发送
+		async submit(data) {
+			// 组织发送数据格式
+			let result = await this.$store.dispatch('sendChatMessage', {
+				data,
+				type: 'text'
+			});
+			// 请求发送接口
+			console.log('result000000', result);
 
-			this.list.push(obj);
-			// 清空输入框
-			this.content = '';
-			// 滚动到底部
-			this.pageToBottom();
+			this.$H
+				.post('/chat/send', result, {
+					token: true
+				})
+				.then(res => {
+					this.renderPage({
+						data: result,
+						send: true
+					});
+				});
 		},
 		// 滚动到底部
 		pageToBottom() {

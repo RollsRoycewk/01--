@@ -138,6 +138,7 @@ export default new Vuex.Store({
 		},
 		// 获取未读信息
 		getUnreadMessages({ state, dispatch }) {
+			console.log('获取未读信息中...');
 			$http
 				.post(
 					'/chat/get',
@@ -147,7 +148,7 @@ export default new Vuex.Store({
 					}
 				)
 				.then(data => {
-					console.log('获取未读信息成功==============>', data);
+					console.log('获取未读信息成功', data);
 					data.forEach(msg => {
 						// 处理接收消息
 						dispatch('handleChatMessage', msg);
@@ -162,7 +163,7 @@ export default new Vuex.Store({
 		},
 		// 处理接收消息
 		handleChatMessage({ state, dispatch }, data) {
-			console.log('socket-处理接收消息,handleChatMessage', data);
+			console.log('socket-处理接收消息', data);
 
 			// 全局通知接口
 			uni.$emit('UserChat', data);
@@ -425,6 +426,10 @@ export default new Vuex.Store({
 				uni.setStorageSync('user', state.user);
 			}
 		},
+		// 存储会话列表
+		saveChatList(state, list) {
+			uni.setStorageSync('chatlist_' + state.user.id, JSON.stringify(list));
+		},
 		// 创建聊天对象
 		createToUser(state, ToUser) {
 			state.ToUser = ToUser;
@@ -436,18 +441,6 @@ export default new Vuex.Store({
 				username: '',
 				userpic: ''
 			};
-		},
-		// 存储会话列表
-		saveChatList(state, list) {
-			uni.setStorageSync('chatlist_' + state.user.id, JSON.stringify(list));
-		},
-		// 存储与某个用户聊天内容列表
-		saveChatDetail(state, { list, toId }) {
-			// chatdetail_[当前用户id]_[聊天对象id]
-			let myId = state.user.id;
-			toId = toId ? toId : state.ToUser.user_id;
-			let key = 'chatdetail_' + myId + '_' + toId;
-			uni.setStorageSync(key, JSON.stringify(list));
 		}
 	}
 });

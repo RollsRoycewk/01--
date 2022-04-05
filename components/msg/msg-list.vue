@@ -42,8 +42,13 @@ export default {
 	methods: {
 		// 打开聊天界面
 		open() {
+			let user = {
+				user_id: this.item.user_id,
+				username: this.item.username,
+				userpic: this.item.avatar
+			};
 			uni.navigateTo({
-				url: '../../pages/user-chat/user-chat',
+				url: '../../pages/user-chat/user-chat?user=' + JSON.stringify(user),
 				success: () => {
 					// 清除未读数，更新底部导航消息数显示
 					this.$store.dispatch('readChatMessage', this.item);

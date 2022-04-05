@@ -83,7 +83,7 @@
 				<text class="iconfont icon-sousuo mr-2"></text>
 				{{ userinfo.isblack ? '移出黑名单' : '加入黑名单' }}
 			</view>
-			<view class="py-2 flex align-center justify-center font-md border-bottom" hover-class="bg-light">
+			<view class="py-2 flex align-center justify-center font-md border-bottom" hover-class="bg-light" @click="open">
 				<text class="iconfont icon-sousuo mr-2"></text>
 				聊天
 			</view>
@@ -376,6 +376,21 @@ export default {
 						}
 					}
 				});
+			});
+		},
+		open() {
+			let user = {
+				user_id: this.user_id,
+				username: this.userinfo.username,
+				userpic: this.userinfo.userpic
+			};
+
+			uni.navigateTo({
+				url: '../../pages/user-chat/user-chat?user=' + JSON.stringify(user),
+				success: () => {
+					// 清除未读数，更新底部导航消息数显示
+					this.$store.dispatch('readChatMessage', user);
+				}
 			});
 		}
 	}
