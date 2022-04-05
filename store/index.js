@@ -9,9 +9,9 @@ import $U from '@/common/util.js';
 
 export default new Vuex.Store({
 	state: {
-		loginStatus: uni.getStorageSync('user').id ? true : false,
-		user: uni.getStorageSync('user').id ? uni.getStorageSync('user') : {},
-		token: uni.getStorageSync('user').token ? uni.getStorageSync('user').token : false,
+		loginStatus: false,
+		user: {},
+		token: false,
 		// Socket连接状态
 		IsOpen: false,
 		// SocketTask
@@ -26,6 +26,17 @@ export default new Vuex.Store({
 		}
 	},
 	actions: {
+		// 初始化登录状态
+		initUser({ state, dispatch }) {
+			let user = uni.getStorageSync('user');
+			if (user) {
+				state.user = user;
+				state.loginStatus = true;
+				state.token = state.user.token;
+				// 打开socket
+				dispatch('openSocket');
+			}
+		},
 		// 打开socket
 		openSocket({ state, dispatch }) {
 			// 防止重复连接
@@ -110,13 +121,14 @@ export default new Vuex.Store({
 					console.log('绑定成功', data);
 
 					// 开始上线
-					if (data.status && status.type == 'bind') {
+					if (data.status && data.type == 'bind') {
 						// 改为上线状态
 						state.IsOnline = true;
 
 						// 初始化会话列表
 						dispatch('initChatList');
 						// 获取未读信息
+						dispatch('getUnreadMessages');
 					}
 				})
 				.catch(err => {
